@@ -60,8 +60,8 @@ document.addEventListener('DOMContentLoaded', async () => {
   // Initialize animations on initial static elements
   initScrollAnimations();
 
-  // Initialize Student Showcase Auto-Scroller in Hero
-  initStudentSlider();
+  // Initialize Pure Student Images Auto-Scroll Banner in Hero
+  initHeroBannerSlider();
 
   // 1. Mobile Menu Toggle
   const mobileToggle = document.getElementById('mobileToggle');
@@ -361,9 +361,9 @@ function renderDynamicShowcase(items) {
     `).join('');
   }
 
-  // Also sync the Hero Student Auto-Scroller Banner
+  // Sync Student Images to the Hero Banner
   if (items && items.length) {
-    renderHeroStudentCarousel(items);
+    updateHeroBannerImages(items);
   }
 
   if (typeof initScrollAnimations === 'function') {
@@ -372,25 +372,19 @@ function renderDynamicShowcase(items) {
 }
 
 // ==========================================================================
-// STUDENT SHOWCASE AUTO-SCROLLER BANNER (HERO)
+// HERO PURE STUDENT IMAGES AUTO-SCROLL BANNER
 // ==========================================================================
-let currentStudentSlide = 0;
-let studentSlideTimer = null;
+let currentHeroBannerIndex = 0;
+let heroBannerTimer = null;
 
-function initStudentSlider() {
-  const slides = document.querySelectorAll('.student-slide');
-  const dotsContainer = document.getElementById('heroSliderDots');
+function initHeroBannerSlider() {
+  const slides = document.querySelectorAll('.hero-banner-slide');
+  const dotsContainer = document.getElementById('heroBannerDots');
   if (!slides.length) return;
 
-  if (dotsContainer) {
-    dotsContainer.innerHTML = Array.from(slides).map((_, i) => `
-      <span class="slider-dot ${i === 0 ? 'active' : ''}" onclick="goToStudentSlide(${i})"></span>
-    `).join('');
-  }
-
-  function showSlide(index) {
-    const allSlides = document.querySelectorAll('.student-slide');
-    const allDots = document.querySelectorAll('#heroSliderDots .slider-dot');
+  function showBannerSlide(index) {
+    const allSlides = document.querySelectorAll('.hero-banner-slide');
+    const allDots = document.querySelectorAll('#heroBannerDots .banner-slider-dot');
     if (!allSlides.length) return;
 
     if (index >= allSlides.length) index = 0;
@@ -404,70 +398,63 @@ function initStudentSlider() {
       d.classList.toggle('active', idx === index);
     });
 
-    currentStudentSlide = index;
+    currentHeroBannerIndex = index;
   }
 
-  window.goToStudentSlide = function(index) {
-    showSlide(index);
-    startTimer();
+  window.goToHeroBannerSlide = function(index) {
+    showBannerSlide(index);
+    startBannerTimer();
   };
 
-  window.nextStudentSlide = function() {
-    showSlide(currentStudentSlide + 1);
-    startTimer();
+  window.nextHeroBannerSlide = function() {
+    showBannerSlide(currentHeroBannerIndex + 1);
+    startBannerTimer();
   };
 
-  window.prevStudentSlide = function() {
-    showSlide(currentStudentSlide - 1);
-    startTimer();
+  window.prevHeroBannerSlide = function() {
+    showBannerSlide(currentHeroBannerIndex - 1);
+    startBannerTimer();
   };
 
-  function startTimer() {
-    if (studentSlideTimer) clearInterval(studentSlideTimer);
-    studentSlideTimer = setInterval(() => {
-      showSlide(currentStudentSlide + 1);
-    }, 3500); // Auto-transitions every 3.5 seconds
+  function startBannerTimer() {
+    if (heroBannerTimer) clearInterval(heroBannerTimer);
+    heroBannerTimer = setInterval(() => {
+      showBannerSlide(currentHeroBannerIndex + 1);
+    }, 3200); // Transitions to next student image every 3.2s
   }
 
-  const carouselBox = document.getElementById('heroStudentCarousel');
-  if (carouselBox) {
-    carouselBox.addEventListener('mouseenter', () => {
-      if (studentSlideTimer) clearInterval(studentSlideTimer);
+  const frame = document.querySelector('.hero-banner-frame');
+  if (frame) {
+    frame.addEventListener('mouseenter', () => {
+      if (heroBannerTimer) clearInterval(heroBannerTimer);
     });
-    carouselBox.addEventListener('mouseleave', () => {
-      startTimer();
+    frame.addEventListener('mouseleave', () => {
+      startBannerTimer();
     });
   }
 
-  startTimer();
+  startBannerTimer();
 }
 
-function renderHeroStudentCarousel(items) {
-  const track = document.getElementById('heroCarouselTrack');
+// Dynamically sync student images from Supabase showcase into the Hero Banner
+function updateHeroBannerImages(items) {
+  const track = document.getElementById('heroBannerTrack');
+  const dots = document.getElementById('heroBannerDots');
   if (!track || !items || !items.length) return;
 
   track.innerHTML = items.map((s, idx) => `
-    <div class="student-slide ${idx === 0 ? 'active' : ''}">
-      <div class="slide-media">
-        <img src="${escapeHtml(s.image_url)}" alt="${escapeHtml(s.student_name)}" onerror="this.src='https://images.unsplash.com/photo-1543269865-cbf427effbad?auto=format&fit=crop&w=600&q=80';" />
-        <span class="slide-badge"><i class="fa-solid fa-award"></i> ${escapeHtml(s.course_or_achievement || 'Star Student')}</span>
-      </div>
-      <div class="slide-info">
-        <div class="slide-meta">
-          <h4>${escapeHtml(s.student_name)} <span class="student-age">${s.age ? '(' + s.age + ' yrs)' : ''}</span></h4>
-          ${s.country ? `<span class="slide-country"><i class="fa-solid fa-location-dot"></i> ${escapeHtml(s.country)}</span>` : ''}
-        </div>
-        <div class="slide-rating">
-          <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
-          <small>Verified Student</small>
-        </div>
-        <p class="slide-milestone"><i class="fa-solid fa-check-circle"></i> ${escapeHtml(s.course_or_achievement || 'Active Learner')}</p>
-        <p class="slide-quote">"${escapeHtml(s.story || 'Enrolled in 1-on-1 online classes with certified tutors.')}"</p>
-      </div>
+    <div class="hero-banner-slide ${idx === 0 ? 'active' : ''}">
+      <img src="${escapeHtml(s.image_url)}" alt="Quran Student" onerror="this.src='https://images.unsplash.com/photo-1543269865-cbf427effbad?auto=format&fit=crop&w=800&q=80';" />
     </div>
   `).join('');
 
-  initStudentSlider();
+  if (dots) {
+    dots.innerHTML = items.map((_, idx) => `
+      <span class="banner-slider-dot ${idx === 0 ? 'active' : ''}" onclick="goToHeroBannerSlide(${idx})"></span>
+    `).join('');
+  }
+
+  initHeroBannerSlider();
 }
 
 /* ==========================================================================
