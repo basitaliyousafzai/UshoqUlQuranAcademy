@@ -1,11 +1,11 @@
 /**
  * ============================================================================
- * USHAQ UL QURAN ACADEMY - HARDENED FRONTEND SECURITY & ANTI-DEVTOOLS SHIELD
- * - Complete Console Suppression & Auto-Purge (Wipes console every 300ms)
- * - Right-Click, Selection & Key Shortcut Interception (F12, Ctrl+Shift+I/J/C, Ctrl+U, Ctrl+S)
- * - Multi-Vector DevTools Detection (Docked bottom, right, top, undocked)
- * - Fullscreen Security Overlay + Body Blur Lockout
- * - Infinite Call-Stack Anti-Debugging Trap (Halts debugger immediately)
+ * USHAQ UL QURAN ACADEMY - FRONTEND SECURITY & CODE PROTECTION SYSTEM
+ * - Complete Console Suppression & Auto-Purge (Disables console output & logs)
+ * - Right-Click Context Menu Prevention
+ * - Source Inspection & Save Page Shortcut Interception (F12, Ctrl+Shift+I/J/C, Ctrl+U, Ctrl+S)
+ * - Drag & Drop Protection
+ * - 100% False-Positive Free: Crystal clear rendering across all Mobiles, Tablets & Desktops
  * ============================================================================
  */
 (function () {
@@ -31,14 +31,15 @@
         }
       });
     }
-    // Auto-wipe console repeatedly
+
+    // Auto-wipe console repeatedly to keep it completely blank
     setInterval(function () {
       try {
         if (window.console && typeof window.console.clear === 'function') {
           window.console.clear();
         }
       } catch (e) {}
-    }, 400);
+    }, 500);
   } catch (e) {}
 
   // 2. DISABLE RIGHT-CLICK CONTEXT MENU
@@ -48,7 +49,7 @@
     return false;
   }, { capture: true });
 
-  // 3. DISABLE SHORTCUT KEYS (F12, Ctrl+Shift+I/J/C, Ctrl+U, Ctrl+S, etc.)
+  // 3. DISABLE SHORTCUT KEYS (F12, Ctrl+Shift+I/J/C/K, Ctrl+U, Ctrl+S)
   window.addEventListener('keydown', function (e) {
     const code = e.keyCode || e.which;
     const isCtrl = e.ctrlKey || e.metaKey;
@@ -79,136 +80,18 @@
     }
   }, { capture: true });
 
-  // 4. PREVENT DRAG & DROP OF CODE / IMAGES
+  // 4. PREVENT DRAG & DROP OF SENSITIVE ASSETS
   document.addEventListener('dragstart', function (e) {
     e.preventDefault();
   });
 
-  // 5. DEVTOOLS ACTIVE LOCKOUT SHIELD & BLUR
-  let shieldElement = null;
-
-  function createShield() {
-    if (document.getElementById('devtoolsSecurityShield')) return;
-    shieldElement = document.createElement('div');
-    shieldElement.id = 'devtoolsSecurityShield';
-    shieldElement.style.cssText = [
-      'position: fixed !important',
-      'inset: 0 !important',
-      'width: 100vw !important',
-      'height: 100vh !important',
-      'background: #022c22 !important',
-      'color: #ffffff !important',
-      'z-index: 2147483647 !important',
-      'display: flex !important',
-      'flex-direction: column !important',
-      'align-items: center !important',
-      'justify-content: center !important',
-      'text-align: center !important',
-      'padding: 30px !important',
-      'font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important',
-      'user-select: none !important'
-    ].join(';');
-
-    shieldElement.innerHTML = [
-      '<div style="width:72px; height:72px; border-radius:50%; background:rgba(245,158,11,0.15); display:flex; align-items:center; justify-content:center; margin-bottom:20px; box-shadow:0 0 30px rgba(245,158,11,0.3);">',
-      '  <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>',
-      '</div>',
-      '<h2 style="font-size:24px; font-weight:800; color:#ffffff; margin-bottom:10px; letter-spacing:0.5px;">Developer Tools Access Disabled</h2>',
-      '<p style="max-width:440px; color:#a7f3d0; font-size:14.5px; line-height:1.6; margin-bottom:20px;">Source code inspection and developer console access are strictly restricted for security and academic content protection.</p>',
-      '<div style="background:rgba(255,255,255,0.08); padding:10px 20px; border-radius:8px; font-size:13px; color:#fde68a;">',
-      '  <strong>Action Required:</strong> Please close Developer Tools to continue viewing the website.',
-      '</div>'
-    ].join('');
-
-    if (document.body) {
-      document.body.appendChild(shieldElement);
-      document.body.style.filter = 'blur(16px)';
-      document.body.style.userSelect = 'none';
-    } else {
-      document.documentElement.appendChild(shieldElement);
-    }
+  // Ensure body is never blurred under any circumstance
+  if (document.body) {
+    document.body.style.filter = 'none';
+  } else {
+    document.addEventListener('DOMContentLoaded', function () {
+      if (document.body) document.body.style.filter = 'none';
+    });
   }
-
-  function removeShield() {
-    const shield = document.getElementById('devtoolsSecurityShield');
-    if (shield && shield.parentNode) {
-      shield.parentNode.removeChild(shield);
-    }
-    if (document.body) {
-      document.body.style.filter = '';
-      document.body.style.userSelect = '';
-    }
-  }
-
-  // 6. REAL-TIME MULTI-DIMENSIONAL DEVTOOLS DETECTION
-  let devtoolsDetected = false;
-  const threshold = 120; // Triggers if docked at bottom, right, or top > 120px
-
-  function triggerDevToolsAction(isOpen) {
-    if (isOpen) {
-      devtoolsDetected = true;
-      createShield();
-    } else if (devtoolsDetected) {
-      devtoolsDetected = false;
-      removeShield();
-    }
-  }
-
-  function detectDevTools() {
-    const widthDiff = window.outerWidth - window.innerWidth > threshold;
-    const heightDiff = window.outerHeight - window.innerHeight > threshold;
-
-    // Check if docked at bottom, right, or top
-    if (widthDiff || heightDiff) {
-      triggerDevToolsAction(true);
-      return;
-    }
-
-    // High-precision timing check
-    const start = performance.now();
-    (function () {
-      return false;
-    }['constructor']('debugger')());
-    const end = performance.now();
-
-    if (end - start > 100) {
-      triggerDevToolsAction(true);
-    } else {
-      if (devtoolsDetected && !widthDiff && !heightDiff) {
-        triggerDevToolsAction(false);
-      }
-    }
-  }
-
-  // 7. HIGH-SPEED RECURSIVE ANTI-DEBUGGER PAUSE TRAP
-  // When DevTools is open, this hits debugger continuously with deep stack
-  function antiDebug() {
-    function pause(i) {
-      if (('' + i / i).length !== 1 || i === 0) {
-        (function () {}).constructor('debugger')();
-      } else {
-        (function () {}).constructor('debugger')();
-      }
-      pause(++i);
-    }
-    try {
-      pause(0);
-    } catch (e) {
-      setTimeout(antiDebug, 100);
-    }
-  }
-
-  // Launch anti-debugger traps
-  setInterval(function () {
-    (function () {
-      return false;
-    }['constructor']('debugger')());
-  }, 100);
-
-  setTimeout(antiDebug, 200);
-
-  // Periodic detector check
-  setInterval(detectDevTools, 400);
-  window.addEventListener('resize', detectDevTools);
 
 })();
