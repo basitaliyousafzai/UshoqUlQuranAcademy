@@ -14,6 +14,14 @@ const DEFAULT_ADMIN_EMAIL = "contact@ushaqulquran.com";
 const SUPABASE_KEY_PROTECT_PASS = "basit@231...0";
 
 // 1. Check & Enforce Authentication on Admin Load
+function updateAdminLayoutDisplay() {
+  const adminLayout = document.querySelector('.admin-layout');
+  if (adminLayout && sessionStorage.getItem('admin_authenticated') === 'true') {
+    adminLayout.style.display = window.innerWidth >= 1024 ? 'grid' : 'flex';
+  }
+}
+window.addEventListener('resize', updateAdminLayoutDisplay);
+
 function checkAdminAuth() {
   const isAuth = sessionStorage.getItem('admin_authenticated');
   const loginModal = document.getElementById('adminLoginModal');
@@ -21,14 +29,20 @@ function checkAdminAuth() {
 
   if (isAuth === 'true') {
     if (loginModal) loginModal.style.display = 'none';
-    if (adminLayout) adminLayout.style.display = 'grid';
+    if (adminLayout) {
+      adminLayout.classList.add('authenticated');
+      updateAdminLayoutDisplay();
+    }
     // Display current logged in user name
     const activeUser = sessionStorage.getItem('admin_active_name') || 'Administrator';
     const userRoleEl = document.getElementById('activeAdminRoleBadge');
     if (userRoleEl) userRoleEl.textContent = activeUser;
   } else {
     if (loginModal) loginModal.style.display = 'flex';
-    if (adminLayout) adminLayout.style.display = 'none';
+    if (adminLayout) {
+      adminLayout.classList.remove('authenticated');
+      adminLayout.style.display = 'none';
+    }
   }
 }
 

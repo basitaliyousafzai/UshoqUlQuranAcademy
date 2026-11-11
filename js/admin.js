@@ -66,13 +66,47 @@ async function initDashboard() {
   await fetchSiteSettings();
 }
 
+// ==========================================================================
+// MOBILE DRAWER CONTROLLER (Fluid Off-Canvas for All Phones & Tablets)
+// ==========================================================================
+function toggleAdminDrawer() {
+  const sidebar = document.querySelector('.admin-sidebar');
+  if (!sidebar) return;
+  if (sidebar.classList.contains('open')) {
+    closeAdminDrawer();
+  } else {
+    openAdminDrawer();
+  }
+}
+
+function openAdminDrawer() {
+  const sidebar = document.querySelector('.admin-sidebar');
+  const backdrop = document.getElementById('adminDrawerBackdrop');
+  if (sidebar) sidebar.classList.add('open');
+  if (backdrop) backdrop.classList.add('active');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeAdminDrawer() {
+  const sidebar = document.querySelector('.admin-sidebar');
+  const backdrop = document.getElementById('adminDrawerBackdrop');
+  if (sidebar) sidebar.classList.remove('open');
+  if (backdrop) backdrop.classList.remove('active');
+  document.body.style.overflow = '';
+}
+
 function switchTab(tabId, el) {
   activeTab = tabId;
   document.querySelectorAll('.tab-section').forEach(t => t.classList.remove('active'));
-  document.getElementById(tabId).classList.add('active');
+  const target = document.getElementById(tabId);
+  if (target) target.classList.add('active');
 
   document.querySelectorAll('.admin-nav-item').forEach(nav => nav.classList.remove('active'));
   if (el) el.classList.add('active');
+
+  // Close mobile drawer and smoothly scroll to top on tab switch
+  closeAdminDrawer();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
 /* ==========================================================================

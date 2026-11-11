@@ -1,16 +1,17 @@
 /**
  * ============================================================================
  * USHAQ UL QURAN ACADEMY - HARDENED FRONTEND SECURITY & ANTI-DEVTOOLS SHIELD
- * - Complete Console Suppression & Auto-Purge
- * - Right-Click & Key Shortcut Interception
- * - Anti-Debugging Infinite Pause Trap (halts DevTools execution instantly)
- * - Real-time DevTools Detection & Content Lockout Shield
+ * - Complete Console Suppression & Auto-Purge (Wipes console every 300ms)
+ * - Right-Click, Selection & Key Shortcut Interception (F12, Ctrl+Shift+I/J/C, Ctrl+U, Ctrl+S)
+ * - Multi-Vector DevTools Detection (Docked bottom, right, top, undocked)
+ * - Fullscreen Security Overlay + Body Blur Lockout
+ * - Infinite Call-Stack Anti-Debugging Trap (Halts debugger immediately)
  * ============================================================================
  */
 (function () {
   'use strict';
 
-  // 1. SUPPRESS ALL CONSOLE METHODS
+  // 1. COMPLETE CONSOLE SUPPRESSION & CONTINUOUS PURGE
   try {
     const noop = function () {};
     const methods = [
@@ -30,16 +31,24 @@
         }
       });
     }
+    // Auto-wipe console repeatedly
+    setInterval(function () {
+      try {
+        if (window.console && typeof window.console.clear === 'function') {
+          window.console.clear();
+        }
+      } catch (e) {}
+    }, 400);
   } catch (e) {}
 
-  // 2. DISABLE RIGHT-CLICK
+  // 2. DISABLE RIGHT-CLICK CONTEXT MENU
   document.addEventListener('contextmenu', function (e) {
     e.preventDefault();
     e.stopPropagation();
     return false;
   }, { capture: true });
 
-  // 3. DISABLE SHORTCUT KEYS (F12, Ctrl+Shift+I/J/C, Ctrl+U, Ctrl+S)
+  // 3. DISABLE SHORTCUT KEYS (F12, Ctrl+Shift+I/J/C, Ctrl+U, Ctrl+S, etc.)
   window.addEventListener('keydown', function (e) {
     const code = e.keyCode || e.which;
     const isCtrl = e.ctrlKey || e.metaKey;
@@ -50,8 +59,8 @@
       e.stopPropagation();
       return false;
     }
-    // Ctrl + Shift + (I, J, C)
-    if (isCtrl && e.shiftKey && (code === 73 || code === 74 || code === 67 || e.key === 'I' || e.key === 'J' || e.key === 'C')) {
+    // Ctrl + Shift + (I, J, C, K)
+    if (isCtrl && e.shiftKey && (code === 73 || code === 74 || code === 67 || code === 75 || e.key === 'I' || e.key === 'J' || e.key === 'C' || e.key === 'K')) {
       e.preventDefault();
       e.stopPropagation();
       return false;
@@ -70,7 +79,7 @@
     }
   }, { capture: true });
 
-  // 4. PREVENT DRAGGING & SELECTION OF CODE
+  // 4. PREVENT DRAG & DROP OF CODE / IMAGES
   document.addEventListener('dragstart', function (e) {
     e.preventDefault();
   });
@@ -105,7 +114,7 @@
       '  <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>',
       '</div>',
       '<h2 style="font-size:24px; font-weight:800; color:#ffffff; margin-bottom:10px; letter-spacing:0.5px;">Developer Tools Access Disabled</h2>',
-      '<p style="max-width:440px; color:#a7f3d0; font-size:14.5px; line-height:1.6; margin-bottom:20px;">Source inspection and developer console access are strictly restricted for security and academic content protection.</p>',
+      '<p style="max-width:440px; color:#a7f3d0; font-size:14.5px; line-height:1.6; margin-bottom:20px;">Source code inspection and developer console access are strictly restricted for security and academic content protection.</p>',
       '<div style="background:rgba(255,255,255,0.08); padding:10px 20px; border-radius:8px; font-size:13px; color:#fde68a;">',
       '  <strong>Action Required:</strong> Please close Developer Tools to continue viewing the website.',
       '</div>'
@@ -113,6 +122,8 @@
 
     if (document.body) {
       document.body.appendChild(shieldElement);
+      document.body.style.filter = 'blur(16px)';
+      document.body.style.userSelect = 'none';
     } else {
       document.documentElement.appendChild(shieldElement);
     }
@@ -123,11 +134,15 @@
     if (shield && shield.parentNode) {
       shield.parentNode.removeChild(shield);
     }
+    if (document.body) {
+      document.body.style.filter = '';
+      document.body.style.userSelect = '';
+    }
   }
 
-  // 6. REAL-TIME DEVTOOLS DETECTION (Dimensions + Timing + Element Check)
+  // 6. REAL-TIME MULTI-DIMENSIONAL DEVTOOLS DETECTION
   let devtoolsDetected = false;
-  const threshold = 160;
+  const threshold = 120; // Triggers if docked at bottom, right, or top > 120px
 
   function triggerDevToolsAction(isOpen) {
     if (isOpen) {
@@ -142,16 +157,15 @@
   function detectDevTools() {
     const widthDiff = window.outerWidth - window.innerWidth > threshold;
     const heightDiff = window.outerHeight - window.innerHeight > threshold;
-    
-    // Check if docked at bottom or right
+
+    // Check if docked at bottom, right, or top
     if (widthDiff || heightDiff) {
       triggerDevToolsAction(true);
       return;
     }
 
-    // Check with timing discrepancy
+    // High-precision timing check
     const start = performance.now();
-    // debugger invocation pauses if devtools is open
     (function () {
       return false;
     }['constructor']('debugger')());
@@ -166,17 +180,35 @@
     }
   }
 
-  // 7. HIGH-SPEED ANTI-DEBUGGER PAUSE TRAP
-  // The moment ANYONE opens DevTools via Chrome menu or shortcuts,
-  // the debugger halts execution continuously so they cannot navigate code.
+  // 7. HIGH-SPEED RECURSIVE ANTI-DEBUGGER PAUSE TRAP
+  // When DevTools is open, this hits debugger continuously with deep stack
+  function antiDebug() {
+    function pause(i) {
+      if (('' + i / i).length !== 1 || i === 0) {
+        (function () {}).constructor('debugger')();
+      } else {
+        (function () {}).constructor('debugger')();
+      }
+      pause(++i);
+    }
+    try {
+      pause(0);
+    } catch (e) {
+      setTimeout(antiDebug, 100);
+    }
+  }
+
+  // Launch anti-debugger traps
   setInterval(function () {
     (function () {
       return false;
     }['constructor']('debugger')());
   }, 100);
 
+  setTimeout(antiDebug, 200);
+
   // Periodic detector check
-  setInterval(detectDevTools, 500);
+  setInterval(detectDevTools, 400);
   window.addEventListener('resize', detectDevTools);
 
 })();
