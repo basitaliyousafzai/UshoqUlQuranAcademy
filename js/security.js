@@ -1,6 +1,6 @@
 /**
  * ============================================================================
- * USHOQ UL QURAN ACADEMY - HARDENED FRONTEND SECURITY & ANTI-DEVTOOLS SHIELD
+ * USHAQ UL QURAN ACADEMY - HARDENED FRONTEND SECURITY & ANTI-DEVTOOLS SHIELD
  * - Complete Console Suppression & Auto-Purge
  * - Right-Click & Key Shortcut Interception
  * - Anti-Debugging Infinite Pause Trap (halts DevTools execution instantly)

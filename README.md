@@ -1,6 +1,6 @@
-# Ushoq Ul Quran Academy - Official Website
+# Ushaq Ul Quran Academy - Official Website
 
-A modern, responsive, high-converting website built for **Ushoq Ul Quran Academy** (Global Online Quran & Islamic Academy).
+A modern, responsive, high-converting website built for **Ushaq Ul Quran Academy** (Global Online Quran & Islamic Academy).
 
 ---
 
@@ -19,12 +19,12 @@ A modern, responsive, high-converting website built for **Ushoq Ul Quran Academy
 ---
 
 ## 📁 Pages Included:
-- [index.html](file:///e:/Own%20Porjects/UshoqUlQuranAcademy/index.html) - Homepage with hero lead card, verse banner, core pillars, featured courses, how-it-works, dynamic pricing table, tutors showcase, testimonials, and CTA.
-- [courses.html](file:///e:/Own%20Porjects/UshoqUlQuranAcademy/courses.html) - In-depth breakdown of Noorani Qaida, Tajweed & Tarteel, Quran Recitation (Nazra), Hifz, Tafseer, Islamic Essentials, and Quranic Arabic.
-- [fee-plans.html](file:///e:/Own%20Porjects/UshoqUlQuranAcademy/fee-plans.html) - Multi-currency fee calculator (Weekend, Standard, Intensive), inclusions, refund/make-up class policies, and tuition FAQs.
-- [tutors.html](file:///e:/Own%20Porjects/UshoqUlQuranAcademy/tutors.html) - Verified Male Scholars and Female Ustadhas faculty profiles with qualifications and 4-stage vetting process.
-- [about.html](file:///e:/Own%20Porjects/UshoqUlQuranAcademy/about.html) - Academy founding story, mission, vision, and core pedagogical values (Rifq & Itqan).
-- [contact.html](file:///e:/Own%20Porjects/UshoqUlQuranAcademy/contact.html) - Direct inquiry form, phone & WhatsApp contact channels, and help center FAQ accordion.
-- [admission.html](file:///e:/Own%20Porjects/UshoqUlQuranAcademy/admission.html) - Comprehensive student registration and 3-day free trial application form with URL auto-selection.
-- [css/style.css](file:///e:/Own%20Porjects/UshoqUlQuranAcademy/css/style.css) - Custom CSS design system, responsive grids, and animations.
-- [js/main.js](file:///e:/Own%20Porjects/UshoqUlQuranAcademy/js/main.js) - Currency switcher logic, mobile navigation toggle, and form validation + WhatsApp integration.
+- [index.html](file:///e:/Own%20Porjects/UshaqUlQuranAcademy/index.html) - Homepage with hero lead card, verse banner, core pillars, featured courses, how-it-works, dynamic pricing table, tutors showcase, testimonials, and CTA.
+- [courses.html](file:///e:/Own%20Porjects/UshaqUlQuranAcademy/courses.html) - In-depth breakdown of Noorani Qaida, Tajweed & Tarteel, Quran Recitation (Nazra), Hifz, Tafseer, Islamic Essentials, and Quranic Arabic.
+- [fee-plans.html](file:///e:/Own%20Porjects/UshaqUlQuranAcademy/fee-plans.html) - Multi-currency fee calculator (Weekend, Standard, Intensive), inclusions, refund/make-up class policies, and tuition FAQs.
+- [tutors.html](file:///e:/Own%20Porjects/UshaqUlQuranAcademy/tutors.html) - Verified Male Scholars and Female Ustadhas faculty profiles with qualifications and 4-stage vetting process.
+- [about.html](file:///e:/Own%20Porjects/UshaqUlQuranAcademy/about.html) - Academy founding story, mission, vision, and core pedagogical values (Rifq & Itqan).
+- [contact.html](file:///e:/Own%20Porjects/UshaqUlQuranAcademy/contact.html) - Direct inquiry form, phone & WhatsApp contact channels, and help center FAQ accordion.
+- [admission.html](file:///e:/Own%20Porjects/UshaqUlQuranAcademy/admission.html) - Comprehensive student registration and 3-day free trial application form with URL auto-selection.
+- [css/style.css](file:///e:/Own%20Porjects/UshaqUlQuranAcademy/css/style.css) - Custom CSS design system, responsive grids, and animations.
+- [js/main.js](file:///e:/Own%20Porjects/UshaqUlQuranAcademy/js/main.js) - Currency switcher logic, mobile navigation toggle, and form validation + WhatsApp integration.

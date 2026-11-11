@@ -1,6 +1,6 @@
 /* ==========================================================================
    Admin Security, Multi-User Authentication & Session Manager
-   Ushoq Ul Quran Academy
+   Ushaq Ul Quran Academy
    - Multi-User Supabase Database Login (admin_users table)
    - Fallback local admin account
    - Supabase Secret Key Protection Password: 'basit@231...0'
@@ -10,7 +10,7 @@
 
 const DEFAULT_ADMIN_USER = "admin";
 const DEFAULT_ADMIN_PASS = "admin";
-const DEFAULT_ADMIN_EMAIL = "contact@ushoqulquran.com";
+const DEFAULT_ADMIN_EMAIL = "contact@ushaqulquran.com";
 const SUPABASE_KEY_PROTECT_PASS = "basit@231...0";
 
 // 1. Check & Enforce Authentication on Admin Load

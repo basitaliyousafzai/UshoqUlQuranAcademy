@@ -1,6 +1,6 @@
 /* ==========================================================================
    Supabase Configuration & Client Initialization
-   Ushoq Ul Quran Academy
+   Ushaq Ul Quran Academy
    ========================================================================== */
 
 // Official Production Supabase Credentials for your project

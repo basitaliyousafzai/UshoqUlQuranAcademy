@@ -1,5 +1,5 @@
 /* ==========================================================================
-   Ushoq Ul Quran Academy - Interactive Main JS with Supabase Realtime Sync
+   Ushaq Ul Quran Academy - Interactive Main JS with Supabase Realtime Sync
    - Page Preloader Dismissal & Icon Animations
    - Entrance Animations (Slide from Left, Right, Up, Zoom)
    - Mobile Nav Toggle
@@ -207,6 +207,25 @@ async function loadLiveSiteContent() {
 }
 
 function applyCachedSettings() {
+  // 1. Dynamic Academy Brand Name, Subtitle & Custom Logo
+  const academyName = (localStorage.getItem('setting_academy_name') || 'Ushaq Ul Quran').trim();
+  const academySub = (localStorage.getItem('setting_academy_sub') || 'Online Global Academy').trim();
+  const academyLogo = (localStorage.getItem('setting_academy_logo_url') || '').trim();
+
+  document.querySelectorAll('.brand-title').forEach(el => el.textContent = academyName);
+  document.querySelectorAll('.brand-sub').forEach(el => el.textContent = academySub);
+  document.querySelectorAll('.preloader-title').forEach(el => el.textContent = academyName);
+  document.querySelectorAll('.preloader-subtitle').forEach(el => el.textContent = academySub);
+
+  // Apply custom logo if uploaded, else default icon
+  document.querySelectorAll('.logo-icon').forEach(iconEl => {
+    if (academyLogo) {
+      iconEl.innerHTML = `<img src="${escapeHtml(academyLogo)}" alt="${escapeHtml(academyName)}" style="width:100%; height:100%; object-fit:contain; border-radius:inherit;" />`;
+    } else {
+      iconEl.innerHTML = `<i class="fa-solid fa-book-quran"></i>`;
+    }
+  });
+
   const announcement = localStorage.getItem('setting_announcement');
   if (announcement) {
     const badge = document.querySelector('.top-actions .badge');
@@ -215,7 +234,7 @@ function applyCachedSettings() {
 
   const ukPhone = localStorage.getItem('setting_uk_phone') || '+44 7400 123456';
   const pkPhone = localStorage.getItem('setting_pk_phone') || '+92 300 1234567';
-  const email = localStorage.getItem('setting_email') || 'contact@ushoqulquran.com';
+  const email = localStorage.getItem('setting_email') || 'contact@ushaqulquran.com';
 
   const topInfo = document.querySelector('.top-info');
   if (topInfo) {
@@ -505,7 +524,7 @@ async function handleQuickForm(e) {
   }
 
   const waMsg = encodeURIComponent(
-    `Assalam-o-Alaikum, I just registered for a 3-Day Free Trial at Ushoq Ul Quran Academy.\nName: ${name}\nPhone: ${phone}\nEmail: ${email}\nCourse: ${course}\nTutor: ${tutor}`
+    `Assalam-o-Alaikum, I just registered for a 3-Day Free Trial at Ushaq Ul Quran Academy.\nName: ${name}\nPhone: ${phone}\nEmail: ${email}\nCourse: ${course}\nTutor: ${tutor}`
   );
   
   setTimeout(() => {
@@ -571,7 +590,7 @@ async function handleAdmissionForm(e) {
   }
 
   const waMsg = encodeURIComponent(
-    `Assalam-o-Alaikum Ushoq Ul Quran Academy, I have submitted the complete admission form for ${name} for ${course}. Please confirm our free trial schedule.`
+    `Assalam-o-Alaikum Ushaq Ul Quran Academy, I have submitted the complete admission form for ${name} for ${course}. Please confirm our free trial schedule.`
   );
 
   setTimeout(() => {

@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
-  <title>Admin Dashboard | Ushoq Ul Quran Academy</title>
+  <title>Admin Dashboard | Ushaq Ul Quran Academy</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -225,7 +225,7 @@
         </div>
       </div>
       <div class="preloader-brand">
-        <span class="preloader-title">Ushoq Ul Quran</span>
+        <span class="preloader-title">Ushaq Ul Quran</span>
         <span class="preloader-subtitle">Admin Workspace</span>
       </div>
       <div class="preloader-bar">
@@ -291,7 +291,7 @@
       <form onsubmit="handleSendResetToken(event)">
         <div class="form-group">
           <label>Registered Admin Email</label>
-          <input type="email" id="forgotEmail" required placeholder="contact@ushoqulquran.com" />
+          <input type="email" id="forgotEmail" required placeholder="contact@ushaqulquran.com" />
         </div>
         <button type="submit" class="btn btn-primary btn-block">
           <i class="fa-solid fa-paper-plane"></i> Send Verification Code
@@ -330,7 +330,7 @@
     <div class="admin-logo">
       <div class="logo-icon" style="width:36px; height:36px; font-size:16px;"><i class="fa-solid fa-book-quran"></i></div>
       <div>
-        <h3>Ushoq Ul Quran</h3>
+        <h3>Ushaq Ul Quran</h3>
         <span id="activeAdminRoleBadge" style="font-size:11px; color:#f59e0b;">Administrator</span>
       </div>
     </div>
@@ -699,6 +699,44 @@
 
       <div class="admin-card" style="max-width:760px;">
         <form onsubmit="handleSaveSettings(event)">
+          
+          <!-- Academy Name, Branding & Custom Logo -->
+          <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:10px; padding:18px; margin-bottom:20px;">
+            <h4 style="font-size:15px; font-weight:700; color:var(--primary-dark); margin-bottom:12px; display:flex; align-items:center; gap:8px;">
+              <i class="fa-solid fa-gem" style="color:var(--accent);"></i> Academy Identity & Logo
+            </h4>
+            
+            <div class="form-row">
+              <div class="form-group half">
+                <label><i class="fa-solid fa-graduation-cap"></i> Academy Name</label>
+                <input type="text" id="settingAcademyName" placeholder="Ushaq Ul Quran" />
+              </div>
+              <div class="form-group half">
+                <label><i class="fa-solid fa-tag"></i> Subtitle / Tagline</label>
+                <input type="text" id="settingAcademySub" placeholder="Online Global Academy" />
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label><i class="fa-solid fa-image"></i> Website Logo (Upload Image or Enter URL)</label>
+              <div style="display:flex; gap:10px; align-items:center;">
+                <input type="url" id="settingLogoUrl" placeholder="https://... or upload image" oninput="previewAdminLogo(this.value)" style="flex:1;" />
+                <label class="btn btn-outline btn-sm" style="margin:0; cursor:pointer; white-space:nowrap;">
+                  <i class="fa-solid fa-upload"></i> Upload Logo
+                  <input type="file" id="settingLogoFile" accept="image/*" style="display:none;" onchange="handleLogoUpload(event)" />
+                </label>
+              </div>
+              <small style="color:#64748b; margin-top:4px; display:block;">Upload your academy logo (PNG / JPG / SVG). If empty, the default gold Quran icon is used.</small>
+            </div>
+
+            <div id="adminLogoPreviewBox" style="margin-top:10px; display:flex; align-items:center; gap:14px; padding:10px 14px; background:#ffffff; border:1px dashed #cbd5e1; border-radius:8px;">
+              <span style="font-size:12px; color:#64748b; font-weight:600;">Current Logo Preview:</span>
+              <div id="adminLogoPreviewWrap" style="height:44px; display:flex; align-items:center;">
+                <div style="display:flex; align-items:center; gap:8px;"><i class="fa-solid fa-book-quran" style="color:var(--accent); font-size:24px;"></i> <span style="font-size:12px; color:#64748b;">(Default Icon)</span></div>
+              </div>
+            </div>
+          </div>
+
           <div class="form-group">
             <label><i class="fa-solid fa-bullhorn" style="color:var(--accent);"></i> Top Announcement Bar Notice</label>
             <input type="text" id="settingAnnouncement" placeholder="3-Day Free Trial Available • Zero Registration Fee • 1-on-1 Classes" />
@@ -717,7 +755,7 @@
 
           <div class="form-group">
             <label><i class="fa-regular fa-envelope"></i> Contact Email</label>
-            <input type="email" id="settingEmail" placeholder="contact@ushoqulquran.com" />
+            <input type="email" id="settingEmail" placeholder="contact@ushaqulquran.com" />
           </div>
 
           <div class="form-row">
@@ -772,7 +810,7 @@
         <form onsubmit="handleChangeAdminPassword(event)">
           <div class="form-group">
             <label><i class="fa-regular fa-envelope"></i> Recovery Email</label>
-            <input type="email" id="securityEmail" placeholder="contact@ushoqulquran.com" value="contact@ushoqulquran.com" />
+            <input type="email" id="securityEmail" placeholder="contact@ushaqulquran.com" value="contact@ushaqulquran.com" />
             <small style="color:#64748b;">Password reset instructions will be dispatched to this email.</small>
           </div>
 

@@ -1,5 +1,5 @@
 -- ============================================================================
--- USHOQ UL QURAN ACADEMY - FULLY IDEMPOTENT SUPABASE SCHEMA
+-- USHAQ UL QURAN ACADEMY - FULLY IDEMPOTENT SUPABASE SCHEMA
 -- Safe to run multiple times without any errors (uses IF NOT EXISTS, 
 -- ALTER TABLE ... ADD COLUMN IF NOT EXISTS, and DROP POLICY IF EXISTS).
 -- ============================================================================
@@ -279,7 +279,7 @@ ON public.site_settings FOR ALL TO anon, authenticated USING (true) WITH CHECK (
 
 -- Seed Default Master Admin User
 INSERT INTO public.admin_users (username, password, full_name, email, role, is_active) 
-VALUES ('admin', 'admin', 'Lead Academic Director', 'contact@ushoqulquran.com', 'Super Admin', true)
+VALUES ('admin', 'admin', 'Lead Academic Director', 'contact@ushaqulquran.com', 'Super Admin', true)
 ON CONFLICT (username) DO NOTHING;
 
 -- Seed Initial Courses
@@ -314,9 +314,12 @@ ON CONFLICT (student_name) DO NOTHING;
 
 -- Seed Site Settings (Uses ON CONFLICT DO UPDATE)
 INSERT INTO public.site_settings (id, key_label, value) VALUES
+('academy_name', 'Academy Brand Name', 'Ushaq Ul Quran'),
+('academy_sub', 'Academy Subtitle / Tagline', 'Online Global Academy'),
+('academy_logo_url', 'Website Custom Logo URL', ''),
 ('uk_phone', 'UK Phone Number', '+44 7400 123456'),
 ('pk_phone', 'PK Phone / WhatsApp', '+92 300 1234567'),
-('email', 'Contact Email', 'contact@ushoqulquran.com'),
+('email', 'Contact Email', 'contact@ushaqulquran.com'),
 ('announcement', 'Top Announcement Bar Text', '3-Day Free Trial Available • Zero Registration Fee • 1-on-1 Classes'),
 ('trial_days', 'Free Trial Days Length', '3')
 ON CONFLICT (id) DO UPDATE SET value = EXCLUDED.value;

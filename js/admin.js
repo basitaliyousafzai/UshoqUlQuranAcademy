@@ -1,5 +1,5 @@
 /* ==========================================================================
-   Ushoq Ul Quran Academy - Admin Management Script
+   Ushaq Ul Quran Academy - Admin Management Script
    Handles Supabase CRUD for:
    - Trial Requests & Admissions
    - Dynamic Courses & Images Management (NEW!)
@@ -139,7 +139,7 @@ async function fetchTrialRequests() {
         </td>
         <td>
           <div style="display:flex; gap:6px;">
-            <a href="https://wa.me/${cleanPhone(req.phone_whatsapp)}?text=${encodeURIComponent(`Assalam-o-Alaikum ${req.student_name}, this is Ushoq Ul Quran Academy regarding your trial request for ${req.course}.`)}" target="_blank" class="btn btn-whatsapp btn-sm" title="Message on WhatsApp">
+            <a href="https://wa.me/${cleanPhone(req.phone_whatsapp)}?text=${encodeURIComponent(`Assalam-o-Alaikum ${req.student_name}, this is Ushaq Ul Quran Academy regarding your trial request for ${req.course}.`)}" target="_blank" class="btn btn-whatsapp btn-sm" title="Message on WhatsApp">
               <i class="fa-brands fa-whatsapp"></i>
             </a>
             <button onclick="deleteTrialRequest('${req.id}')", class="btn btn-outline btn-sm" style="color:#dc2626; border-color:#fca5a5;" title="Delete">
@@ -413,7 +413,7 @@ function renderLocalAdminUsers() {
     return;
   }
   const defaultList = [
-    { id: '1', username: 'admin', full_name: 'Lead Academic Director', email: 'contact@ushoqulquran.com', role: 'Super Admin', is_active: true }
+    { id: '1', username: 'admin', full_name: 'Lead Academic Director', email: 'contact@ushaqulquran.com', role: 'Super Admin', is_active: true }
   ];
   renderUsersList(defaultList);
 }
@@ -756,6 +756,12 @@ async function fetchSiteSettings() {
     const { data } = await client.from('site_settings').select('*');
     if (data && data.length > 0) {
       data.forEach(item => {
+        if (item.id === 'academy_name') document.getElementById('settingAcademyName').value = item.value;
+        if (item.id === 'academy_sub') document.getElementById('settingAcademySub').value = item.value;
+        if (item.id === 'academy_logo_url') {
+          document.getElementById('settingLogoUrl').value = item.value;
+          previewAdminLogo(item.value);
+        }
         if (item.id === 'uk_phone') document.getElementById('settingUkPhone').value = item.value;
         if (item.id === 'pk_phone') document.getElementById('settingPkPhone').value = item.value;
         if (item.id === 'email') document.getElementById('settingEmail').value = item.value;
@@ -774,10 +780,58 @@ async function fetchSiteSettings() {
   }
 }
 
+function previewAdminLogo(url) {
+  const wrap = document.getElementById('adminLogoPreviewWrap');
+  if (!wrap) return;
+  if (url && url.trim()) {
+    wrap.innerHTML = `<img src="${escapeHtml(url)}" alt="Logo" style="max-height:42px; max-width:140px; object-fit:contain;" onerror="this.outerHTML='<span style=\\'color:#ef4444; font-size:12px;\\'>Invalid image URL</span>';" />`;
+  } else {
+    wrap.innerHTML = `<div style="display:flex; align-items:center; gap:8px;"><i class="fa-solid fa-book-quran" style="color:var(--accent); font-size:24px;"></i> <span style="font-size:12px; color:#64748b;">(Default Icon)</span></div>`;
+  }
+}
+
+async function handleLogoUpload(e) {
+  const file = e.target.files[0];
+  if (!file) return;
+
+  const client = initSupabase();
+  if (!client) {
+    alert("Supabase connection required for storage uploads.");
+    return;
+  }
+
+  const ext = file.name.split('.').pop();
+  const fileName = `logo_${Date.now()}.${ext}`;
+
+  try {
+    const { data, error } = await client.storage.from('academy-images').upload(fileName, file, { upsert: true });
+    if (error) {
+      alert("Storage upload error: " + error.message);
+      return;
+    }
+    const { data: publicData } = client.storage.from('academy-images').getPublicUrl(fileName);
+    if (publicData?.publicUrl) {
+      document.getElementById('settingLogoUrl').value = publicData.publicUrl;
+      previewAdminLogo(publicData.publicUrl);
+    }
+  } catch (err) {
+    alert("Upload failed: " + err.message);
+  }
+}
+
 function loadLocalSettings() {
+  const acadName = localStorage.getItem('setting_academy_name') || 'Ushaq Ul Quran';
+  const acadSub = localStorage.getItem('setting_academy_sub') || 'Online Global Academy';
+  const logoUrl = localStorage.getItem('setting_academy_logo_url') || '';
+
+  document.getElementById('settingAcademyName').value = acadName;
+  document.getElementById('settingAcademySub').value = acadSub;
+  document.getElementById('settingLogoUrl').value = logoUrl;
+  previewAdminLogo(logoUrl);
+
   document.getElementById('settingUkPhone').value = localStorage.getItem('setting_uk_phone') || '+44 7400 123456';
   document.getElementById('settingPkPhone').value = localStorage.getItem('setting_pk_phone') || '+92 300 1234567';
-  document.getElementById('settingEmail').value = localStorage.getItem('setting_email') || 'contact@ushoqulquran.com';
+  document.getElementById('settingEmail').value = localStorage.getItem('setting_email') || 'contact@ushaqulquran.com';
   document.getElementById('settingAnnouncement').value = localStorage.getItem('setting_announcement') || '3-Day Free Trial Available • Zero Registration Fee • 1-on-1 Classes';
   document.getElementById('settingFacebook').value = localStorage.getItem('setting_facebook') || '';
   document.getElementById('settingYoutube').value = localStorage.getItem('setting_youtube') || '';
@@ -788,6 +842,10 @@ function loadLocalSettings() {
 
 async function handleSaveSettings(e) {
   e.preventDefault();
+  const academy_name = document.getElementById('settingAcademyName').value.trim() || 'Ushaq Ul Quran';
+  const academy_sub = document.getElementById('settingAcademySub').value.trim() || 'Online Global Academy';
+  const academy_logo_url = document.getElementById('settingLogoUrl').value.trim();
+
   const uk_phone = document.getElementById('settingUkPhone').value;
   const pk_phone = document.getElementById('settingPkPhone').value;
   const email = document.getElementById('settingEmail').value;
@@ -797,6 +855,10 @@ async function handleSaveSettings(e) {
   const instagram_url = document.getElementById('settingInstagram').value;
   const tiktok_url = document.getElementById('settingTiktok').value;
   const linkedin_url = document.getElementById('settingLinkedin').value;
+
+  localStorage.setItem('setting_academy_name', academy_name);
+  localStorage.setItem('setting_academy_sub', academy_sub);
+  localStorage.setItem('setting_academy_logo_url', academy_logo_url);
 
   localStorage.setItem('setting_uk_phone', uk_phone);
   localStorage.setItem('setting_pk_phone', pk_phone);
@@ -811,6 +873,9 @@ async function handleSaveSettings(e) {
   const client = initSupabase();
   if (client) {
     await client.from('site_settings').upsert([
+      { id: 'academy_name', key_label: 'Academy Name', value: academy_name },
+      { id: 'academy_sub', key_label: 'Academy Subtitle', value: academy_sub },
+      { id: 'academy_logo_url', key_label: 'Academy Logo URL', value: academy_logo_url },
       { id: 'uk_phone', key_label: 'UK Phone', value: uk_phone },
       { id: 'pk_phone', key_label: 'PK Phone', value: pk_phone },
       { id: 'email', key_label: 'Email', value: email },
