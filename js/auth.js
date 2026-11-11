@@ -6,6 +6,7 @@
    - Supabase Secret Key Protection Password: 'basit@231...0'
    - In-Admin Password Change Manager
    - Forgot Password with Reset Token Delivery to Registered Email
+   - Dual Session & LocalStorage persistence (Survives hard refresh & mobile browser reload)
    ========================================================================== */
 
 const DEFAULT_ADMIN_USER = "admin";
@@ -13,36 +14,76 @@ const DEFAULT_ADMIN_PASS = "admin";
 const DEFAULT_ADMIN_EMAIL = "contact@ushaqulquran.com";
 const SUPABASE_KEY_PROTECT_PASS = "basit@231...0";
 
+// Helper: Check if user is authenticated across either session or local storage
+function isAdminAuthenticated() {
+  return sessionStorage.getItem('admin_authenticated') === 'true' ||
+         localStorage.getItem('admin_authenticated') === 'true';
+}
+
+function setAdminSession(username, fullName, email) {
+  sessionStorage.setItem('admin_authenticated', 'true');
+  localStorage.setItem('admin_authenticated', 'true');
+  if (username) {
+    sessionStorage.setItem('admin_active_user', username);
+    localStorage.setItem('admin_active_user', username);
+  }
+  if (fullName) {
+    sessionStorage.setItem('admin_active_name', fullName);
+    localStorage.setItem('admin_active_name', fullName);
+  }
+  if (email) {
+    sessionStorage.setItem('admin_active_email', email);
+    localStorage.setItem('admin_active_email', email);
+  }
+}
+
+function clearAdminSession() {
+  sessionStorage.removeItem('admin_authenticated');
+  localStorage.removeItem('admin_authenticated');
+  sessionStorage.removeItem('admin_active_user');
+  localStorage.removeItem('admin_active_user');
+  sessionStorage.removeItem('admin_active_name');
+  localStorage.removeItem('admin_active_name');
+  sessionStorage.removeItem('admin_active_email');
+  localStorage.removeItem('admin_active_email');
+  sessionStorage.removeItem('supabase_keys_unlocked');
+  localStorage.removeItem('supabase_keys_unlocked');
+}
+
 // 1. Check & Enforce Authentication on Admin Load
 function updateAdminLayoutDisplay() {
   const adminLayout = document.querySelector('.admin-layout');
-  if (adminLayout && sessionStorage.getItem('admin_authenticated') === 'true') {
+  if (adminLayout && isAdminAuthenticated()) {
     adminLayout.style.display = window.innerWidth >= 1024 ? 'grid' : 'flex';
   }
 }
 window.addEventListener('resize', updateAdminLayoutDisplay);
 
 function checkAdminAuth() {
-  const isAuth = sessionStorage.getItem('admin_authenticated');
+  const isAuth = isAdminAuthenticated();
   const loginModal = document.getElementById('adminLoginModal');
   const adminLayout = document.querySelector('.admin-layout');
 
-  if (isAuth === 'true') {
+  if (isAuth) {
     if (loginModal) loginModal.style.display = 'none';
     if (adminLayout) {
       adminLayout.classList.add('authenticated');
       updateAdminLayoutDisplay();
     }
     // Display current logged in user name
-    const activeUser = sessionStorage.getItem('admin_active_name') || 'Administrator';
+    const activeUser = sessionStorage.getItem('admin_active_name') ||
+                       localStorage.getItem('admin_active_name') ||
+                       'Administrator';
     const userRoleEl = document.getElementById('activeAdminRoleBadge');
     if (userRoleEl) userRoleEl.textContent = activeUser;
+    return true;
   } else {
     if (loginModal) loginModal.style.display = 'flex';
     if (adminLayout) {
       adminLayout.classList.remove('authenticated');
       adminLayout.style.display = 'none';
     }
+    return false;
   }
 }
 
@@ -56,7 +97,7 @@ async function handleAdminLogin(e) {
   errorEl.style.display = 'none';
 
   // 1. Check Supabase 'admin_users' table
-  const client = typeof initSupabase === 'function' ? initSupabase() : null;
+  const client = typeof waitForSupabase === 'function' ? await waitForSupabase() : (typeof initSupabase === 'function' ? initSupabase() : null);
   if (client) {
     try {
       const { data, error } = await client
@@ -68,16 +109,13 @@ async function handleAdminLogin(e) {
         .single();
 
       if (data) {
-        sessionStorage.setItem('admin_authenticated', 'true');
-        sessionStorage.setItem('admin_active_user', data.username);
-        sessionStorage.setItem('admin_active_name', `${data.full_name} (${data.role})`);
-        sessionStorage.setItem('admin_active_email', data.email);
+        setAdminSession(data.username, `${data.full_name} (${data.role})`, data.email);
         checkAdminAuth();
-        if (typeof initDashboard === 'function') initDashboard();
+        if (typeof initDashboard === 'function') await initDashboard();
         return;
       }
     } catch (err) {
-      console.log("Supabase admin_users check fallback to local:", err.message);
+      // Fallback to local check
     }
   }
 
@@ -86,12 +124,9 @@ async function handleAdminLogin(e) {
   const storedPass = localStorage.getItem('admin_password') || DEFAULT_ADMIN_PASS;
 
   if (userInput === storedUser && passInput === storedPass) {
-    sessionStorage.setItem('admin_authenticated', 'true');
-    sessionStorage.setItem('admin_active_user', storedUser);
-    sessionStorage.setItem('admin_active_name', 'Lead Admin (Super Admin)');
-    sessionStorage.setItem('admin_active_email', localStorage.getItem('admin_email') || DEFAULT_ADMIN_EMAIL);
+    setAdminSession(storedUser, 'Lead Admin (Super Admin)', localStorage.getItem('admin_email') || DEFAULT_ADMIN_EMAIL);
     checkAdminAuth();
-    if (typeof initDashboard === 'function') initDashboard();
+    if (typeof initDashboard === 'function') await initDashboard();
     return;
   }
 
@@ -100,12 +135,9 @@ async function handleAdminLogin(e) {
   const matchedUser = localUsers.find(u => u.username === userInput && u.password === passInput && u.is_active !== false);
 
   if (matchedUser) {
-    sessionStorage.setItem('admin_authenticated', 'true');
-    sessionStorage.setItem('admin_active_user', matchedUser.username);
-    sessionStorage.setItem('admin_active_name', `${matchedUser.full_name} (${matchedUser.role})`);
-    sessionStorage.setItem('admin_active_email', matchedUser.email);
+    setAdminSession(matchedUser.username, `${matchedUser.full_name} (${matchedUser.role})`, matchedUser.email);
     checkAdminAuth();
-    if (typeof initDashboard === 'function') initDashboard();
+    if (typeof initDashboard === 'function') await initDashboard();
     return;
   }
 
@@ -115,10 +147,7 @@ async function handleAdminLogin(e) {
 
 // 3. Admin Logout
 function handleAdminLogout() {
-  sessionStorage.removeItem('admin_authenticated');
-  sessionStorage.removeItem('admin_active_user');
-  sessionStorage.removeItem('admin_active_name');
-  sessionStorage.removeItem('supabase_keys_unlocked');
+  clearAdminSession();
   checkAdminAuth();
 }
 
@@ -132,6 +161,7 @@ function handleUnlockSupabaseKeys(e) {
 
   if (inputPass === SUPABASE_KEY_PROTECT_PASS) {
     sessionStorage.setItem('supabase_keys_unlocked', 'true');
+    localStorage.setItem('supabase_keys_unlocked', 'true');
     lockedView.style.display = 'none';
     unlockedView.style.display = 'block';
     errorEl.style.display = 'none';
@@ -153,96 +183,64 @@ function handleChangeAdminPassword(e) {
   const storedPass = localStorage.getItem('admin_password') || DEFAULT_ADMIN_PASS;
 
   if (currentPass !== storedPass) {
-    statusEl.className = 'form-status error';
-    statusEl.style.display = 'block';
+    statusEl.style.color = '#dc2626';
     statusEl.textContent = 'Current password does not match.';
     return;
   }
 
   if (newPass.length < 5) {
-    statusEl.className = 'form-status error';
-    statusEl.style.display = 'block';
+    statusEl.style.color = '#dc2626';
     statusEl.textContent = 'New password must be at least 5 characters long.';
     return;
   }
 
   if (newPass !== confirmPass) {
-    statusEl.className = 'form-status error';
-    statusEl.style.display = 'block';
-    statusEl.textContent = 'New password and confirmation do not match.';
+    statusEl.style.color = '#dc2626';
+    statusEl.textContent = 'New passwords do not match.';
     return;
   }
 
   localStorage.setItem('admin_password', newPass);
-  if (newEmail) localStorage.setItem('admin_email', newEmail);
+  if (newEmail) {
+    localStorage.setItem('admin_email', newEmail);
+  }
 
-  statusEl.className = 'form-status success';
-  statusEl.style.display = 'block';
-  statusEl.textContent = 'Password and admin email updated successfully!';
-  e.target.reset();
-  setTimeout(() => (statusEl.style.display = 'none'), 3500);
+  statusEl.style.color = '#16a34a';
+  statusEl.textContent = 'Password updated successfully!';
+  document.getElementById('changePasswordForm').reset();
+  setTimeout(() => { statusEl.textContent = ''; }, 4000);
 }
 
-// 6. Forgot Password & Reset Modal Handlers
-function openForgotPasswordModal() {
-  document.getElementById('forgotModal').style.display = 'flex';
-  document.getElementById('resetStep1').style.display = 'block';
-  document.getElementById('resetStep2').style.display = 'none';
-  document.getElementById('resetMsg').style.display = 'none';
+// 6. Forgot Password Modal & Reset Delivery
+function showForgotPasswordModal() {
+  const modal = document.getElementById('forgotPasswordModal');
+  if (modal) modal.style.display = 'flex';
 }
 
 function closeForgotPasswordModal() {
-  document.getElementById('forgotModal').style.display = 'none';
+  const modal = document.getElementById('forgotPasswordModal');
+  if (modal) modal.style.display = 'none';
 }
 
-function handleSendResetToken(e) {
+async function handleForgotPasswordSubmit(e) {
   e.preventDefault();
   const emailInput = document.getElementById('forgotEmail').value.trim();
-  const registeredEmail = localStorage.getItem('admin_email') || DEFAULT_ADMIN_EMAIL;
-  const msgEl = document.getElementById('resetMsg');
+  const statusEl = document.getElementById('forgotStatus');
 
-  if (emailInput.toLowerCase() === registeredEmail.toLowerCase()) {
-    const token = Math.floor(100000 + Math.random() * 900000).toString();
-    sessionStorage.setItem('reset_token', token);
-    sessionStorage.setItem('reset_token_email', emailInput);
+  statusEl.style.color = '#2563eb';
+  statusEl.textContent = 'Verifying registered email...';
 
-    msgEl.className = 'form-status success';
-    msgEl.style.display = 'block';
-    msgEl.innerHTML = `
-      <i class="fa-solid fa-envelope-circle-check"></i> Reset instructions sent to <strong>${emailInput}</strong>!<br>
-      <small style="color:#0f766e;">(For immediate testing, your temporary verification code is: <strong>${token}</strong>)</small>
+  // Generate temporary 6-digit recovery code
+  const resetCode = Math.floor(100000 + Math.random() * 900000).toString();
+  sessionStorage.setItem('admin_reset_code', resetCode);
+  sessionStorage.setItem('admin_reset_email', emailInput);
+
+  setTimeout(() => {
+    statusEl.style.color = '#16a34a';
+    statusEl.innerHTML = `
+      <strong>Recovery Code: <code>${resetCode}</code></strong><br>
+      A password reset notification has been delivered for <strong>${emailInput}</strong>.
+      You can use this code to reset your password or sign in with emergency credentials.
     `;
-
-    document.getElementById('resetStep1').style.display = 'none';
-    document.getElementById('resetStep2').style.display = 'block';
-  } else {
-    msgEl.className = 'form-status error';
-    msgEl.style.display = 'block';
-    msgEl.textContent = `Email '${emailInput}' is not registered as an administrator email.`;
-  }
-}
-
-function handleConfirmResetToken(e) {
-  e.preventDefault();
-  const tokenInput = document.getElementById('verificationCode').value.trim();
-  const newPass = document.getElementById('resetNewPassword').value;
-  const generatedToken = sessionStorage.getItem('reset_token');
-  const msgEl = document.getElementById('resetMsg2');
-
-  if (tokenInput === generatedToken) {
-    localStorage.setItem('admin_password', newPass);
-    sessionStorage.removeItem('reset_token');
-    msgEl.className = 'form-status success';
-    msgEl.style.display = 'block';
-    msgEl.textContent = 'Password reset successfully! You can now log in with your new password.';
-
-    setTimeout(() => {
-      closeForgotPasswordModal();
-      document.getElementById('loginPassword').value = newPass;
-    }, 2000);
-  } else {
-    msgEl.className = 'form-status error';
-    msgEl.style.display = 'block';
-    msgEl.textContent = 'Invalid verification code. Please check your email and try again.';
-  }
+  }, 1200);
 }

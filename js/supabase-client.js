@@ -19,8 +19,8 @@ function getSupabaseConfig() {
 let supabaseClient = null;
 
 function initSupabase() {
+  if (supabaseClient) return supabaseClient;
   if (typeof supabase === 'undefined') {
-    console.warn("Supabase library not loaded yet.");
     return null;
   }
   const config = getSupabaseConfig();
@@ -36,7 +36,20 @@ function initSupabase() {
   return null;
 }
 
-// Auto-initialize when Supabase CDN script finishes loading
+// Robust async resolver: waits for Supabase CDN script if loading over network
+async function waitForSupabase(maxWaitMs = 5000) {
+  if (supabaseClient) return supabaseClient;
+  if (typeof supabase !== 'undefined') {
+    return initSupabase();
+  }
+  const start = Date.now();
+  while (typeof supabase === 'undefined' && (Date.now() - start < maxWaitMs)) {
+    await new Promise(r => setTimeout(r, 60));
+  }
+  return initSupabase();
+}
+
+// Auto-initialize when Supabase CDN script is already loaded
 if (typeof supabase !== 'undefined') {
   initSupabase();
 }

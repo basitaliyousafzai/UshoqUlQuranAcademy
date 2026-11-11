@@ -31,17 +31,45 @@ if (document.readyState === 'complete') {
 
 let activeTab = 'trialsTab';
 
-document.addEventListener('DOMContentLoaded', async () => {
+// Bootstrapping and Auto-Recovery for Admin Portal
+async function bootAdminApp() {
+  hideAdminPreloader();
+  const isAuth = typeof checkAdminAuth === 'function' ? checkAdminAuth() : false;
   loadConfigInputs();
   checkConnectionBanner();
-  await initDashboard();
+
+  if (isAuth) {
+    await initDashboard();
+  }
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', bootAdminApp);
+} else {
+  bootAdminApp();
+}
+
+// Guaranteed Fallback: on window load, ensure content is rendered even after hard refresh
+window.addEventListener('load', async () => {
+  hideAdminPreloader();
+  if (typeof isAdminAuthenticated === 'function' && isAdminAuthenticated()) {
+    checkAdminAuth();
+    loadConfigInputs();
+    checkConnectionBanner();
+    const tbody = document.getElementById('trialsTableBody');
+    if (tbody && (tbody.innerHTML.includes('Loading...') || tbody.children.length === 0)) {
+      await initDashboard();
+    }
+  }
 });
 
 function loadConfigInputs() {
   const config = getSupabaseConfig();
   if (config.url) {
-    document.getElementById('configUrl').value = config.url;
-    document.getElementById('configKey').value = config.anonKey;
+    const urlEl = document.getElementById('configUrl');
+    const keyEl = document.getElementById('configKey');
+    if (urlEl) urlEl.value = config.url;
+    if (keyEl) keyEl.value = config.anonKey;
   }
 }
 
@@ -49,7 +77,7 @@ function checkConnectionBanner() {
   const config = getSupabaseConfig();
   const banner = document.getElementById('connectionBanner');
   const bannerText = document.getElementById('connectionBannerText');
-  if (config.url) {
+  if (banner && bannerText && config.url) {
     banner.style.background = '#f0fdf4';
     banner.style.borderLeftColor = '#22c55e';
     banner.style.color = '#15803d';
@@ -58,12 +86,21 @@ function checkConnectionBanner() {
 }
 
 async function initDashboard() {
-  await fetchTrialRequests();
-  await fetchCourses();
-  await fetchAdminUsers();
-  await fetchTutors();
-  await fetchStudents();
-  await fetchSiteSettings();
+  // Wait for Supabase CDN to be ready so network delays never cause blank content
+  if (typeof waitForSupabase === 'function') {
+    await waitForSupabase();
+  }
+  loadConfigInputs();
+  checkConnectionBanner();
+
+  await Promise.allSettled([
+    fetchTrialRequests(),
+    fetchCourses(),
+    fetchAdminUsers(),
+    fetchTutors(),
+    fetchStudents(),
+    fetchSiteSettings()
+  ]);
 }
 
 // ==========================================================================
@@ -114,7 +151,7 @@ function switchTab(tabId, el) {
    ========================================================================== */
 async function fetchTrialRequests() {
   const tbody = document.getElementById('trialsTableBody');
-  const client = initSupabase();
+  const client = typeof waitForSupabase === 'function' ? await waitForSupabase() : initSupabase();
 
   if (!client) {
     renderLocalTrials();
@@ -244,7 +281,7 @@ function deleteLocalTrial(index) {
    ========================================================================== */
 async function fetchCourses() {
   const container = document.getElementById('coursesContainer');
-  const client = initSupabase();
+  const client = typeof waitForSupabase === 'function' ? await waitForSupabase() : initSupabase();
 
   if (!client) {
     renderFallbackCourses();
@@ -393,7 +430,7 @@ async function deleteCourse(id) {
    ========================================================================== */
 async function fetchAdminUsers() {
   const container = document.getElementById('usersContainer');
-  const client = initSupabase();
+  const client = typeof waitForSupabase === 'function' ? await waitForSupabase() : initSupabase();
 
   if (!client) {
     renderLocalAdminUsers();
@@ -538,7 +575,7 @@ async function deleteAdminUser(id, username) {
    4. TUTORS MANAGEMENT
    ========================================================================== */
 async function fetchTutors() {
-  const client = initSupabase();
+  const client = typeof waitForSupabase === 'function' ? await waitForSupabase() : initSupabase();
   if (!client) {
     renderFallbackTutors();
     return;
@@ -661,7 +698,7 @@ async function deleteTutor(id) {
    5. CHILDREN / STUDENT SHOWCASE MANAGEMENT
    ========================================================================== */
 async function fetchStudents() {
-  const client = initSupabase();
+  const client = typeof waitForSupabase === 'function' ? await waitForSupabase() : initSupabase();
   if (!client) {
     renderFallbackStudents();
     return;
@@ -781,7 +818,7 @@ async function deleteStudent(id) {
    6. SITE TEXT & SOCIAL MEDIA LINKS SETTINGS
    ========================================================================== */
 async function fetchSiteSettings() {
-  const client = initSupabase();
+  const client = typeof waitForSupabase === 'function' ? await waitForSupabase() : initSupabase();
   if (!client) {
     loadLocalSettings();
     return;
