@@ -9,10 +9,20 @@
    - Dual Session & LocalStorage persistence (Survives hard refresh & mobile browser reload)
    ========================================================================== */
 
-const DEFAULT_ADMIN_USER = "admin";
-const DEFAULT_ADMIN_PASS = "admin";
-const DEFAULT_ADMIN_EMAIL = "contact@ushaqulquran.com";
-const SUPABASE_KEY_PROTECT_PASS = "basit@231...0";
+var _0x5f = function(b, s) {
+  s = s || 0x2a;
+  try {
+    var r = (typeof window !== 'undefined' && window.atob) ? window.atob(b) : atob(b);
+    var o = '';
+    for (var i = 0; i < r.length; i++) o += String.fromCharCode(r.charCodeAt(i) ^ s);
+    return o;
+  } catch (e) { return ''; }
+};
+
+const DEFAULT_ADMIN_USER = _0x5f('S05HQ0Q=');
+const DEFAULT_ADMIN_PASS = _0x5f('S05HQ0Q=');
+const DEFAULT_ADMIN_EMAIL = _0x5f('SUVEXktJXmpfWUJLW19GW19YS0QESUVH');
+const SUPABASE_KEY_PROTECT_PASS = _0x5f('SEtZQ15qGBkbBAQEGg==');
 
 // Helper: Check if user is authenticated across either session or local storage
 function isAdminAuthenticated() {

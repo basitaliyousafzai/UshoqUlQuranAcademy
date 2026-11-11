@@ -85,6 +85,26 @@
     e.preventDefault();
   });
 
+  // 5. ANTI-DEBUGGING TRAP (Traps Developer Tools execution immediately if opened)
+  (function () {
+    function _0xdbg() {
+      function _0xp(i) {
+        if (('' + i / i).length !== 1 || i === 0) {
+          (function () {}).constructor('debugger')();
+        } else {
+          (function () {}).constructor('debugger')();
+        }
+        _0xp(++i);
+      }
+      try {
+        _0xp(0);
+      } catch (e) {
+        setTimeout(_0xdbg, 200);
+      }
+    }
+    setInterval(_0xdbg, 250);
+  })();
+
   // Ensure body is never blurred under any circumstance
   if (document.body) {
     document.body.style.filter = 'none';
