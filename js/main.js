@@ -60,6 +60,9 @@ document.addEventListener('DOMContentLoaded', async () => {
   // Initialize animations on initial static elements
   initScrollAnimations();
 
+  // Initialize Student Showcase Auto-Scroller in Hero
+  initStudentSlider();
+
   // 1. Mobile Menu Toggle
   const mobileToggle = document.getElementById('mobileToggle');
   const navMenu = document.getElementById('navMenu');
@@ -346,21 +349,125 @@ function renderDynamicTutors(tutors) {
 
 function renderDynamicShowcase(items) {
   const showcaseContainer = document.getElementById('studentShowcaseGrid');
-  if (!showcaseContainer) return;
+  if (showcaseContainer && items) {
+    showcaseContainer.innerHTML = items.map((s, idx) => `
+      <div class="pillar-card anim-up anim-delay-${(idx % 3) + 1}" style="padding:20px; text-align:center;">
+        <img src="${s.image_url}" alt="${s.student_name}" style="width:100%; height:190px; border-radius:10px; object-fit:cover; margin-bottom:14px;" />
+        <h3 style="font-size:18px;">${s.student_name} <small style="font-size:12px; color:var(--text-muted);">${s.age ? '(' + s.age + ' yrs)' : ''}</small></h3>
+        <p style="color:var(--accent); font-weight:700; font-size:13px; margin-bottom:6px;"><i class="fa-solid fa-award"></i> ${s.course_or_achievement}</p>
+        <p style="font-size:13px; color:var(--text-muted);">${s.story || ''}</p>
+        ${s.country ? `<small style="color:#64748b; margin-top:8px; display:block;"><i class="fa-solid fa-location-dot"></i> ${s.country}</small>` : ''}
+      </div>
+    `).join('');
+  }
 
-  showcaseContainer.innerHTML = items.map((s, idx) => `
-    <div class="pillar-card anim-up anim-delay-${(idx % 3) + 1}" style="padding:20px; text-align:center;">
-      <img src="${s.image_url}" alt="${s.student_name}" style="width:100%; height:190px; border-radius:10px; object-fit:cover; margin-bottom:14px;" />
-      <h3 style="font-size:18px;">${s.student_name} <small style="font-size:12px; color:var(--text-muted);">${s.age ? '(' + s.age + ' yrs)' : ''}</small></h3>
-      <p style="color:var(--accent); font-weight:700; font-size:13px; margin-bottom:6px;"><i class="fa-solid fa-award"></i> ${s.course_or_achievement}</p>
-      <p style="font-size:13px; color:var(--text-muted);">${s.story || ''}</p>
-      ${s.country ? `<small style="color:#64748b; margin-top:8px; display:block;"><i class="fa-solid fa-location-dot"></i> ${s.country}</small>` : ''}
-    </div>
-  `).join('');
+  // Also sync the Hero Student Auto-Scroller Banner
+  if (items && items.length) {
+    renderHeroStudentCarousel(items);
+  }
 
   if (typeof initScrollAnimations === 'function') {
     initScrollAnimations();
   }
+}
+
+// ==========================================================================
+// STUDENT SHOWCASE AUTO-SCROLLER BANNER (HERO)
+// ==========================================================================
+let currentStudentSlide = 0;
+let studentSlideTimer = null;
+
+function initStudentSlider() {
+  const slides = document.querySelectorAll('.student-slide');
+  const dotsContainer = document.getElementById('heroSliderDots');
+  if (!slides.length) return;
+
+  if (dotsContainer) {
+    dotsContainer.innerHTML = Array.from(slides).map((_, i) => `
+      <span class="slider-dot ${i === 0 ? 'active' : ''}" onclick="goToStudentSlide(${i})"></span>
+    `).join('');
+  }
+
+  function showSlide(index) {
+    const allSlides = document.querySelectorAll('.student-slide');
+    const allDots = document.querySelectorAll('#heroSliderDots .slider-dot');
+    if (!allSlides.length) return;
+
+    if (index >= allSlides.length) index = 0;
+    if (index < 0) index = allSlides.length - 1;
+
+    allSlides.forEach((s, idx) => {
+      s.classList.toggle('active', idx === index);
+    });
+
+    allDots.forEach((d, idx) => {
+      d.classList.toggle('active', idx === index);
+    });
+
+    currentStudentSlide = index;
+  }
+
+  window.goToStudentSlide = function(index) {
+    showSlide(index);
+    startTimer();
+  };
+
+  window.nextStudentSlide = function() {
+    showSlide(currentStudentSlide + 1);
+    startTimer();
+  };
+
+  window.prevStudentSlide = function() {
+    showSlide(currentStudentSlide - 1);
+    startTimer();
+  };
+
+  function startTimer() {
+    if (studentSlideTimer) clearInterval(studentSlideTimer);
+    studentSlideTimer = setInterval(() => {
+      showSlide(currentStudentSlide + 1);
+    }, 3500); // Auto-transitions every 3.5 seconds
+  }
+
+  const carouselBox = document.getElementById('heroStudentCarousel');
+  if (carouselBox) {
+    carouselBox.addEventListener('mouseenter', () => {
+      if (studentSlideTimer) clearInterval(studentSlideTimer);
+    });
+    carouselBox.addEventListener('mouseleave', () => {
+      startTimer();
+    });
+  }
+
+  startTimer();
+}
+
+function renderHeroStudentCarousel(items) {
+  const track = document.getElementById('heroCarouselTrack');
+  if (!track || !items || !items.length) return;
+
+  track.innerHTML = items.map((s, idx) => `
+    <div class="student-slide ${idx === 0 ? 'active' : ''}">
+      <div class="slide-media">
+        <img src="${escapeHtml(s.image_url)}" alt="${escapeHtml(s.student_name)}" onerror="this.src='https://images.unsplash.com/photo-1543269865-cbf427effbad?auto=format&fit=crop&w=600&q=80';" />
+        <span class="slide-badge"><i class="fa-solid fa-award"></i> ${escapeHtml(s.course_or_achievement || 'Star Student')}</span>
+      </div>
+      <div class="slide-info">
+        <div class="slide-meta">
+          <h4>${escapeHtml(s.student_name)} <span class="student-age">${s.age ? '(' + s.age + ' yrs)' : ''}</span></h4>
+          ${s.country ? `<span class="slide-country"><i class="fa-solid fa-location-dot"></i> ${escapeHtml(s.country)}</span>` : ''}
+        </div>
+        <div class="slide-rating">
+          <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+          <small>Verified Student</small>
+        </div>
+        <p class="slide-milestone"><i class="fa-solid fa-check-circle"></i> ${escapeHtml(s.course_or_achievement || 'Active Learner')}</p>
+        <p class="slide-quote">"${escapeHtml(s.story || 'Enrolled in 1-on-1 online classes with certified tutors.')}"</p>
+      </div>
+    </div>
+  `).join('');
+
+  initStudentSlider();
 }
 
 /* ==========================================================================

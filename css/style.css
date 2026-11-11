@@ -477,6 +477,22 @@ ul {
   margin-top: 2px;
 }
 
+/* Hero Form & Student Scroller Deck */
+.hero-form-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+@media (min-width: 768px) {
+  .hero-form-wrapper {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 22px;
+    align-items: stretch;
+  }
+}
+
 /* Quick Lead Card in Hero */
 .lead-form-card {
   background: #ffffff;
@@ -485,6 +501,215 @@ ul {
   padding: 22px 18px;
   box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
   border: 1px solid rgba(255, 255, 255, 0.2);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+/* Companion Student Showcase Auto-Scroller Banner Card */
+.student-slider-card {
+  background: #ffffff;
+  color: var(--text-dark);
+  border-radius: var(--radius-lg);
+  padding: 22px 18px;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-student-carousel {
+  position: relative;
+  overflow: hidden;
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  justify-content: space-between;
+}
+
+.carousel-track {
+  position: relative;
+  min-height: 380px;
+}
+
+.student-slide {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateX(25px);
+  transition: opacity 0.4s ease, transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.4s;
+  display: flex;
+  flex-direction: column;
+}
+
+.student-slide.active {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(0);
+  position: relative;
+}
+
+.slide-media {
+  position: relative;
+  width: 100%;
+  height: 180px;
+  border-radius: 10px;
+  overflow: hidden;
+  margin-bottom: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+}
+
+.slide-media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.45s ease;
+}
+
+.student-slide:hover .slide-media img {
+  transform: scale(1.04);
+}
+
+.slide-badge {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: var(--gold-gradient);
+  color: #ffffff;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 999px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.slide-info {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex: 1;
+}
+
+.slide-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.slide-meta h4 {
+  font-size: 16px;
+  font-weight: 800;
+  color: var(--primary-dark);
+  margin: 0;
+}
+
+.student-age {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-muted);
+}
+
+.slide-country {
+  font-size: 11.5px;
+  color: #64748b;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.slide-rating {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  color: #f59e0b;
+  font-size: 12px;
+}
+
+.slide-rating small {
+  color: #10b981;
+  font-weight: 700;
+  font-size: 11px;
+  margin-left: 6px;
+}
+
+.slide-milestone {
+  font-size: 12.5px;
+  font-weight: 700;
+  color: var(--primary);
+  margin: 2px 0 0;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.slide-quote {
+  font-size: 12px;
+  color: var(--text-muted);
+  line-height: 1.5;
+  font-style: italic;
+  margin: 0;
+}
+
+.slider-controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 12px;
+  padding-top: 10px;
+  border-top: 1px solid #f1f5f9;
+}
+
+.slider-arrow {
+  background: #f1f5f9;
+  border: none;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  color: #475569;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 12px;
+}
+
+.slider-arrow:hover {
+  background: var(--primary);
+  color: #ffffff;
+  transform: scale(1.05);
+}
+
+.slider-dots {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+
+.slider-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #cbd5e1;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.slider-dot.active {
+  width: 22px;
+  border-radius: 99px;
+  background: var(--accent);
 }
 
 .form-header {
@@ -1376,9 +1601,9 @@ ul {
   }
   .hero-container {
     display: grid;
-    grid-template-columns: 1.25fr 1fr;
-    gap: 48px;
-    align-items: center;
+    grid-template-columns: 0.95fr 1.55fr;
+    gap: 36px;
+    align-items: stretch;
   }
   .hero-content {
     text-align: left;
