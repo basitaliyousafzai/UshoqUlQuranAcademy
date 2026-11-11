@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
+  <title>Admission Form – Ushoq Ul Quran Online Academy</title>
+  <meta name="description" content="Apply for online Quran courses. Fill out our admission form to discuss enrollment options and begin your 3-day free trial." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="css/style.css" />
+  <!-- Security & DevTools Deterrence System -->
+  <script src="js/security.js"></script>
+  <!-- Supabase CDN Client -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <style>
+    /* Exact Form Styling inspired by reference website */
+    .forminator-custom-box {
+      background: #ffffff;
+      border-radius: 16px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
+      padding: 36px 28px;
+      border: 1px solid #eef2f0;
+      max-width: 820px;
+      margin: 0 auto;
+    }
+    .form-header-badge {
+      display: inline-block;
+      color: var(--accent);
+      font-size: 13px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      margin-bottom: 6px;
+    }
+    .form-main-heading {
+      font-size: 28px;
+      font-weight: 800;
+      color: var(--primary-dark);
+      margin-bottom: 12px;
+      line-height: 1.25;
+    }
+    .form-desc-text {
+      font-size: 14.5px;
+      color: var(--text-muted);
+      line-height: 1.65;
+      margin-bottom: 30px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid #f1f5f3;
+    }
+    .form-field-wrapper {
+      margin-bottom: 20px;
+    }
+    .form-field-label {
+      display: block;
+      font-size: 12.5px;
+      font-weight: 700;
+      color: #374151;
+      margin-bottom: 7px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .form-field-label .required-star {
+      color: #ef4444;
+      font-weight: 700;
+    }
+    .form-control-input, .form-control-select, .form-control-textarea {
+      width: 100%;
+      padding: 13px 16px;
+      font-size: 14.5px;
+      font-family: inherit;
+      color: var(--text-dark);
+      border: 1px solid #d1d5db;
+      border-radius: 8px;
+      background-color: #fbfcfb;
+      outline: none;
+      transition: all 0.2s ease;
+    }
+    .form-control-input:focus, .form-control-select:focus, .form-control-textarea:focus {
+      border-color: var(--primary);
+      background-color: #ffffff;
+      box-shadow: 0 0 0 3px rgba(6, 78, 59, 0.12);
+    }
+    .textarea-counter {
+      display: flex;
+      justify-content: flex-end;
+      font-size: 12px;
+      color: #9ca3af;
+      margin-top: 5px;
+    }
+    .form-btn-submit {
+      background: var(--gold-gradient);
+      color: #ffffff;
+      font-size: 15px;
+      font-weight: 700;
+      padding: 14px 34px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      box-shadow: 0 4px 14px rgba(217, 119, 6, 0.35);
+      transition: all 0.25s ease;
+    }
+    .form-btn-submit:hover {
+      background: linear-gradient(135deg, #d97706 0%, #b45309 100%);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(217, 119, 6, 0.45);
+    }
+    @media (max-width: 640px) {
+      .forminator-custom-box {
+        padding: 24px 16px;
+      }
+      .form-btn-submit {
+        width: 100%;
+        justify-content: center;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Page Preloader (Islamic Motif & Glowing Spinner) -->
+  <div id="pagePreloader" class="page-preloader" aria-hidden="true">
+    <div class="preloader-content">
+      <div class="preloader-spinner-ring">
+        <div class="spinner-circle"></div>
+        <div class="preloader-icon-wrap">
+          <i class="fa-solid fa-book-quran"></i>
+        </div>
+      </div>
+      <div class="preloader-brand">
+        <span class="preloader-title">Ushoq Ul Quran</span>
+        <span class="preloader-subtitle">Online Global Academy</span>
+      </div>
+      <div class="preloader-bar">
+        <div class="preloader-progress"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Top Announcement Bar -->
+  <div class="top-bar">
+    <div class="container top-bar-content">
+      <div class="top-info">
+        <span><i class="fa-solid fa-phone"></i> +44 7400 123456 (UK)</span>
+        <span><i class="fa-brands fa-whatsapp"></i> +92 300 1234567 (PK)</span>
+        <span><i class="fa-regular fa-envelope"></i> contact@ushoqulquran.com</span>
+      </div>
+      <div class="top-actions">
+        <span class="badge"><i class="fa-solid fa-star"></i> 3-Day Free Trial Available • Zero Registration Fee</span>
+        <div class="top-socials"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Header / Navigation -->
+  <header class="site-header" id="header">
+    <div class="container header-container">
+      <a href="index.html" class="logo">
+        <div class="logo-icon"><i class="fa-solid fa-book-quran"></i></div>
+        <div class="logo-text">
+          <span class="brand-title">Ushoq Ul Quran</span>
+          <span class="brand-sub">Online Global Academy</span>
+        </div>
+      </a>
+
+      <nav class="nav-menu" id="navMenu">
+        <a href="index.html" class="nav-link">Home</a>
+        <a href="courses.html" class="nav-link">Our Courses</a>
+        <a href="fee-plans.html" class="nav-link">Fee Plans</a>
+        <a href="tutors.html" class="nav-link">Our Tutors</a>
+        <a href="about.html" class="nav-link">About Academy</a>
+        <a href="contact.html" class="nav-link">Contact</a>
+        <a href="admission.html" class="nav-link active">Admission Form</a>
+        <a href="admin.html" class="nav-link" style="color:var(--accent);"><i class="fa-solid fa-lock"></i> Admin</a>
+      </nav>
+
+      <div class="header-right">
+        <a href="admission.html" class="btn btn-primary"><i class="fa-solid fa-calendar-check"></i> Book Free Trial</a>
+        <button class="mobile-toggle" id="mobileToggle" aria-label="Toggle navigation">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Page Banner (Matching Reference Site Structure) -->
+  <section class="page-hero">
+    <div class="container anim-up">
+      <div class="breadcrumb">
+        <a href="index.html">Home</a> <i class="fa-solid fa-angle-right"></i> <span>Admission Form</span>
+      </div>
+      <span class="form-header-badge" style="color:#fde68a;">Let's Get your Journey Started</span>
+      <h1>Admission Form</h1>
+      <p>Submit your application below and start your 3-day complimentary Quran learning trial.</p>
+    </div>
+  </section>
+
+  <!-- Exact Admission Form Section -->
+  <section class="section" style="padding: 60px 0;">
+    <div class="container">
+      
+      <div class="forminator-custom-box anim-zoom">
+        <span class="form-header-badge">Ushoq Ul Quran</span>
+        <h2 class="form-main-heading">Submit your Form</h2>
+        <p class="form-desc-text">
+          To apply for the online Quran courses, please fill out the form below with your personal and contact information. After submitting the form, our team will review your application and be in touch with you shortly to discuss your enrollment options.
+        </p>
+
+        <!-- EXACT FORM WITH NAME, EMAIL, PHONE/WHATSAPP, SUBJECTS, MESSAGE -->
+        <form id="admissionFormExact" onsubmit="handleExactAdmissionForm(event)">
+          
+          <div class="form-row">
+            <div class="form-group half form-field-wrapper">
+              <label class="form-field-label" for="exactName">
+                NAME <span class="required-star">*</span>
+              </label>
+              <input type="text" id="exactName" class="form-control-input" required placeholder="Enter your full name" autocomplete="name" />
+            </div>
+
+            <div class="form-group half form-field-wrapper">
+              <label class="form-field-label" for="exactEmail">
+                EMAIL
+              </label>
+              <input type="email" id="exactEmail" class="form-control-input" placeholder="Enter your email address" autocomplete="email" />
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group half form-field-wrapper">
+              <label class="form-field-label" for="exactPhone">
+                PHONE/ WHATSAPP <span class="required-star">*</span>
+              </label>
+              <input type="tel" id="exactPhone" class="form-control-input" required placeholder="Phone / WhatsApp with country code" />
+            </div>
+
+            <div class="form-group half form-field-wrapper">
+              <label class="form-field-label" for="exactSubject">
+                SUBJECTS
+              </label>
+              <select id="exactSubject" class="form-control-select">
+                <option value="Noorani Qaida Course">Noorani Qaida Course</option>
+                <option value="Quran Recitation Course">Quran Recitation Course</option>
+                <option value="Quran Memorization Course">Quran Memorization Course</option>
+                <option value="Tafseer-e-Quran Course">Tafseer-e-Quran Course</option>
+                <option value="Tajweed & Tarteel Course">Tajweed & Tarteel Course</option>
+                <option value="Islamic Education Course">Islamic Education Course</option>
+                <option value="Kalmas & Method of Namaz">Kalmas & Method of Namaz</option>
+                <option value="Prophet Stories from Quran">Prophet Stories from Quran</option>
+                <option value="English, Urdu & Arabic Classes">English, Urdu & Arabic Classes</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-field-wrapper">
+            <label class="form-field-label" for="exactMessage">
+              MESSAGE
+            </label>
+            <textarea id="exactMessage" class="form-control-textarea" rows="4" maxlength="180" placeholder="Write your message or preferred timings..." oninput="updateCharCount(this)"></textarea>
+            <div class="textarea-counter">
+              <span id="charCount">0 / 180</span>
+            </div>
+          </div>
+
+          <div style="margin-top: 10px;">
+            <button type="submit" class="form-btn-submit">
+              <span>Send Message</span>
+              <i class="fa-solid fa-paper-plane"></i>
+            </button>
+          </div>
+
+          <div id="exactFormStatus" class="form-status" style="margin-top: 18px; display: none;"></div>
+        </form>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="container footer-content">
+      <div class="footer-col brand-col">
+        <div class="logo footer-logo">
+          <div class="logo-icon"><i class="fa-solid fa-book-quran"></i></div>
+          <div class="logo-text">
+            <span class="brand-title">Ushoq Ul Quran</span>
+            <span class="brand-sub">Online Global Academy</span>
+          </div>
+        </div>
+        <p>A trusted global institution committed to authentic Quran recitation, Tajweed, Hifz, and Islamic character building in a welcoming digital environment.</p>
+        <div class="footer-socials"></div>
+      </div>
+
+      <div class="footer-col">
+        <h4>Core Courses</h4>
+        <ul class="footer-links">
+          <li><a href="courses.html#qaida">Noorani Qaida Course</a></li>
+          <li><a href="courses.html#tajweed">Tajweed & Tarteel Course</a></li>
+          <li><a href="courses.html#recitation">Quran Recitation Course</a></li>
+          <li><a href="courses.html#hifz">Quran Memorization Course</a></li>
+          <li><a href="courses.html#tafseer">Tafseer-e-Quran Course</a></li>
+          <li><a href="courses.html#islamic-studies">Islamic Education Course</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>Academy Links</h4>
+        <ul class="footer-links">
+          <li><a href="about.html">About Us</a></li>
+          <li><a href="tutors.html">Our Tutors</a></li>
+          <li><a href="fee-plans.html">Fee Plans</a></li>
+          <li><a href="admission.html">Admission Form</a></li>
+          <li><a href="contact.html">Contact Us</a></li>
+          <li><a href="admin.html">Admin Dashboard</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>Contact Direct</h4>
+        <div class="contact-info-list">
+          <p><i class="fa-solid fa-phone"></i> +44 7400 123456</p>
+          <p><i class="fa-brands fa-whatsapp"></i> +92 300 1234567</p>
+          <p><i class="fa-regular fa-envelope"></i> contact@ushoqulquran.com</p>
+        </div>
+        <div class="footer-socials" style="margin-top:14px;"></div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div class="container footer-bottom-content">
+        <p>&copy; 2026 Ushoq Ul Quran Academy. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <a href="https://wa.me/923001234567" target="_blank" class="floating-whatsapp" aria-label="Chat on WhatsApp">
+    <i class="fa-brands fa-whatsapp"></i>
+  </a>
+
+  <!-- Supabase & Main Scripts -->
+  <script src="js/supabase-client.js"></script>
+  <script src="js/main.js"></script>
+  <script>
+    // Character counter for the 180-char message field (exact match)
+    function updateCharCount(textarea) {
+      document.getElementById('charCount').textContent = `${textarea.value.length} / 180`;
+    }
+
+    // Exact Form Handler saving to Supabase & notifying WhatsApp
+    async function handleExactAdmissionForm(e) {
+      e.preventDefault();
+      const name = document.getElementById('exactName').value.trim();
+      const email = document.getElementById('exactEmail').value.trim() || 'N/A';
+      const phone = document.getElementById('exactPhone').value.trim();
+      const subject = document.getElementById('exactSubject').value;
+      const message = document.getElementById('exactMessage').value.trim();
+      const statusDiv = document.getElementById('exactFormStatus');
+
+      statusDiv.className = 'form-status success';
+      statusDiv.style.display = 'block';
+      statusDiv.innerHTML = `
+        <h4 style="margin-bottom:6px;"><i class="fa-solid fa-circle-check"></i> Form Submitted Successfully!</h4>
+        <p>Thank you, <strong>${name}</strong>. Your admission request for <strong>${subject}</strong> has been received. Our academic team will be in touch with you shortly at <strong>${phone}</strong>.</p>
+      `;
+
+      // Insert directly into Supabase 'trial_requests'
+      const client = typeof initSupabase === 'function' ? initSupabase() : null;
+      const payload = {
+        student_name: name,
+        email: email,
+        phone_whatsapp: phone,
+        course: subject,
+        notes: message,
+        source: 'admission_form_exact',
+        status: 'pending'
+      };
+
+      if (client) {
+        try {
+          const { error } = await client.from('trial_requests').insert([payload]);
+          if (error) console.error("Supabase insert error:", error);
+        } catch (err) {
+          console.error(err);
+        }
+      } else {
+        if (typeof saveLocalTrial === 'function') saveLocalTrial(payload);
+      }
+
+      // Pre-fill WhatsApp message
+      const waMsg = encodeURIComponent(
+        `Assalam-o-Alaikum, I submitted the Admission Form on Ushoq Ul Quran Academy.\nName: ${name}\nPhone/WhatsApp: ${phone}\nEmail: ${email}\nSubject: ${subject}\nMessage: ${message}`
+      );
+
+      setTimeout(() => {
+        window.open(`https://wa.me/923001234567?text=${waMsg}`, '_blank');
+      }, 1200);
+
+      e.target.reset();
+      document.getElementById('charCount').textContent = '0 / 180';
+    }
+  </script>
+</body>
+</html>

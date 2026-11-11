@@ -1,0 +1,704 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
+  <title>Ushoq Ul Quran Academy | Live 1-on-1 Online Quran & Islamic Classes</title>
+  <meta name="description" content="Learn Quran online with certified male and female scholars. Tajweed, Noorani Qaida, Hifz, Tafseer, and Arabic classes with flexible schedules & 3 days free trial." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="css/style.css" />
+  <!-- Security & DevTools Deterrence System -->
+  <script src="js/security.js"></script>
+  <!-- Supabase CDN Client -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+
+  <!-- Page Preloader (Islamic Motif & Glowing Spinner) -->
+  <div id="pagePreloader" class="page-preloader" aria-hidden="true">
+    <div class="preloader-content">
+      <div class="preloader-spinner-ring">
+        <div class="spinner-circle"></div>
+        <div class="preloader-icon-wrap">
+          <i class="fa-solid fa-book-quran"></i>
+        </div>
+      </div>
+      <div class="preloader-brand">
+        <span class="preloader-title">Ushoq Ul Quran</span>
+        <span class="preloader-subtitle">Online Global Academy</span>
+      </div>
+      <div class="preloader-bar">
+        <div class="preloader-progress"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Top Announcement Bar -->
+  <div class="top-bar">
+    <div class="container top-bar-content">
+      <div class="top-info">
+        <span><i class="fa-solid fa-phone"></i> +44 7400 123456 (UK)</span>
+        <span><i class="fa-brands fa-whatsapp"></i> +92 300 1234567 (PK)</span>
+        <span><i class="fa-regular fa-envelope"></i> contact@ushoqulquran.com</span>
+      </div>
+      <div class="top-actions">
+        <span class="badge"><i class="fa-solid fa-star"></i> 3-Day Free Trial Available • Zero Registration Fee</span>
+        <!-- Top socials: Rendered dynamically, ONLY showing added channels -->
+        <div class="top-socials"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Header / Navigation -->
+  <header class="site-header" id="header">
+    <div class="container header-container">
+      <a href="index.html" class="logo">
+        <div class="logo-icon"><i class="fa-solid fa-book-quran"></i></div>
+        <div class="logo-text">
+          <span class="brand-title">Ushoq Ul Quran</span>
+          <span class="brand-sub">Online Global Academy</span>
+        </div>
+      </a>
+
+      <nav class="nav-menu" id="navMenu">
+        <a href="index.html" class="nav-link active">Home</a>
+        <a href="courses.html" class="nav-link">Our Courses</a>
+        <a href="fee-plans.html" class="nav-link">Fee Plans</a>
+        <a href="tutors.html" class="nav-link">Our Tutors</a>
+        <a href="about.html" class="nav-link">About Academy</a>
+        <a href="contact.html" class="nav-link">Contact</a>
+        <a href="admin.html" class="nav-link" style="color:var(--accent);"><i class="fa-solid fa-lock"></i> Admin</a>
+        <a href="admission.html" class="btn btn-outline nav-cta-mobile">Free Trial Registration</a>
+      </nav>
+
+      <div class="header-right">
+        <a href="admission.html" class="btn btn-primary"><i class="fa-solid fa-calendar-check"></i> Book Free Trial</a>
+        <button class="mobile-toggle" id="mobileToggle" aria-label="Toggle navigation">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero-section">
+    <div class="hero-bg-overlay"></div>
+    <div class="container hero-container">
+      <div class="hero-content anim-left">
+        <span class="hero-tag"><i class="fa-solid fa-mosque"></i> Welcome to Ushoq Ul Quran Academy</span>
+        <h1 class="hero-title">
+          Master Quran Recitation, Tajweed & Islamic Wisdom <span class="highlight">From Your Home</span>
+        </h1>
+        <p class="hero-description">
+          Empowering children, youth, and adults globally with personalized 1-on-1 live lessons taught by certified male & female Islamic scholars with Sanad and Ijazah.
+        </p>
+
+        <div class="hero-features-row">
+          <div class="h-feat"><i class="fa-solid fa-circle-check"></i> 1-on-1 Interactive Classes</div>
+          <div class="h-feat"><i class="fa-solid fa-circle-check"></i> 24/7 Flexible Scheduling</div>
+          <div class="h-feat"><i class="fa-solid fa-circle-check"></i> Dedicated Female Tutors</div>
+          <div class="h-feat"><i class="fa-solid fa-circle-check"></i> Multi-lingual Instructors</div>
+        </div>
+
+        <div class="hero-cta-group">
+          <a href="admission.html" class="btn btn-primary btn-lg">
+            <span>Book 3-Day Free Trial</span>
+            <i class="fa-solid fa-arrow-right"></i>
+          </a>
+          <a href="#courses" class="btn btn-outline-white btn-lg">
+            <i class="fa-solid fa-graduation-cap"></i> Explore Courses
+          </a>
+        </div>
+
+        <div class="hero-stats">
+          <div class="stat-card">
+            <h4>1,500+</h4>
+            <p>Active Students</p>
+          </div>
+          <div class="stat-card">
+            <h4>45+</h4>
+            <p>Certified Teachers</p>
+          </div>
+          <div class="stat-card">
+            <h4>25+</h4>
+            <p>Countries Reached</p>
+          </div>
+          <div class="stat-card">
+            <h4>99.4%</h4>
+            <p>Parent Satisfaction</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick Lead Card (Syncs with Supabase) -->
+      <div class="hero-form-wrapper anim-right">
+        <div class="lead-form-card">
+          <div class="form-header">
+            <h3>Start Free 3-Day Trial</h3>
+            <p>No credit card required • Cancel anytime</p>
+          </div>
+          <form class="lead-form" id="quickTrialForm" onsubmit="handleQuickForm(event)">
+            <div class="form-group">
+              <label><i class="fa-regular fa-user"></i> Student or Guardian Name</label>
+              <input type="text" required placeholder="e.g. Brother Farhan / Sister Amina" id="leadName" />
+            </div>
+            <div class="form-group">
+              <label><i class="fa-brands fa-whatsapp"></i> WhatsApp / Mobile No.</label>
+              <input type="tel" required placeholder="+1 or +44 or +92..." id="leadPhone" />
+            </div>
+            <div class="form-group">
+              <label><i class="fa-regular fa-envelope"></i> Email Address</label>
+              <input type="email" required placeholder="your.email@example.com" id="leadEmail" />
+            </div>
+            <div class="form-row">
+              <div class="form-group half">
+                <label>Desired Course</label>
+                <select id="leadCourse">
+                  <option>Noorani Qaida for Beginners</option>
+                  <option>Tajweed & Recitation</option>
+                  <option>Quran Memorization (Hifz)</option>
+                  <option>Tafseer & Translation</option>
+                  <option>Islamic Studies For Kids</option>
+                  <option>Quranic Arabic</option>
+                </select>
+              </div>
+              <div class="form-group half">
+                <label>Preferred Tutor</label>
+                <select id="leadTutor">
+                  <option>Any Qualified Tutor</option>
+                  <option>Female Tutor Only</option>
+                  <option>Male Tutor Only</option>
+                </select>
+              </div>
+            </div>
+            <button type="submit" class="btn btn-primary btn-block btn-lg">
+              <i class="fa-solid fa-paper-plane"></i> Reserve Free Trial Class
+            </button>
+            <div id="quickFormStatus" class="form-status"></div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Quranic Verse Banner -->
+  <section class="verse-bar anim-zoom">
+    <div class="container text-center">
+      <div class="verse-arabic">وَرَتِّلِ الْقُرْآنَ تَرْتِيلًا</div>
+      <p class="verse-trans">"And recite the Quran with measured, rhythmic recitation." (Surah Al-Muzzammil, 73:4)</p>
+    </div>
+  </section>
+
+  <!-- Value Pillars -->
+  <section class="section pillars-section">
+    <div class="container">
+      <div class="section-heading text-center anim-up">
+        <span class="sub-title">Why Choose Us</span>
+        <h2>A Better, More Compassionate Quranic Journey</h2>
+        <p class="section-desc">We combine traditional Islamic pedagogical standards with modern virtual classroom technology to deliver an enriching learning experience.</p>
+      </div>
+
+      <div class="pillars-grid">
+        <div class="pillar-card anim-up anim-delay-1">
+          <div class="pillar-icon"><i class="fa-solid fa-chalkboard-user"></i></div>
+          <h3>1-on-1 Individual Focus</h3>
+          <p>Every student receives personalized attention from their assigned tutor, pacing lessons specifically to their learning speed.</p>
+        </div>
+        <div class="pillar-card anim-up anim-delay-2">
+          <div class="pillar-icon"><i class="fa-solid fa-certificate"></i></div>
+          <h3>Certified Alim & Hafiz Tutors</h3>
+          <p>Our educators undergo rigorous background checks, hold Ijazah certificates, and have proven pedagogical experience.</p>
+        </div>
+        <div class="pillar-card anim-up anim-delay-3">
+          <div class="pillar-icon"><i class="fa-solid fa-person-dress"></i></div>
+          <h3>Dedicated Female Tutors</h3>
+          <p>Complete privacy, comfort, and cultural sensitivity for female students and younger children with qualified female Quran teachers.</p>
+        </div>
+        <div class="pillar-card anim-up anim-delay-1">
+          <div class="pillar-icon"><i class="fa-solid fa-clock-rotate-left"></i></div>
+          <h3>Flexible 24/7 Scheduling</h3>
+          <p>Morning, evening, or weekend sessions designed to fit around school, work, and family schedules in any timezone.</p>
+        </div>
+        <div class="pillar-card anim-up anim-delay-2">
+          <div class="pillar-icon"><i class="fa-solid fa-file-invoice-dollar"></i></div>
+          <h3>Affordable & Transparent</h3>
+          <p>No registration fees, no hidden platform charges, plus a 10% family/sibling discount on all monthly subscriptions.</p>
+        </div>
+        <div class="pillar-card anim-up anim-delay-3">
+          <div class="pillar-icon"><i class="fa-solid fa-chart-line"></i></div>
+          <h3>Monthly Progress Reports</h3>
+          <p>Parents receive detailed bi-weekly tracking of Tajweed mistakes, memorized verses, and teacher evaluations.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Children & Student Showcase (Dynamic from Supabase) -->
+  <section class="section bg-light" id="showcase">
+    <div class="container">
+      <div class="section-heading text-center">
+        <span class="sub-title">Student Milestones</span>
+        <h2>Our Young Quran Achievers</h2>
+        <p class="section-desc">Real progress from children and youths enrolled across the UK, USA, Canada, and beyond.</p>
+      </div>
+
+      <div class="pillars-grid" id="studentShowcaseGrid">
+        <div class="pillar-card" style="padding:20px; text-align:center;">
+          <img src="https://images.unsplash.com/photo-1543269865-cbf427effbad?auto=format&fit=crop&w=600&q=80" alt="Zayd & Safiya" style="width:100%; height:190px; border-radius:10px; object-fit:cover; margin-bottom:14px;" />
+          <h3 style="font-size:18px;">Zayd & Safiya <small style="font-size:12px; color:var(--text-muted);">(7 yrs)</small></h3>
+          <p style="color:var(--accent); font-weight:700; font-size:13px; margin-bottom:6px;"><i class="fa-solid fa-award"></i> Completed Noorani Qaida in 3 Months</p>
+          <p style="font-size:13px; color:var(--text-muted);">Started with zero Arabic background. Now reading Surah Al-Mulk fluently with applied Tajweed.</p>
+          <small style="color:#64748b; margin-top:8px; display:block;"><i class="fa-solid fa-location-dot"></i> London, UK</small>
+        </div>
+
+        <div class="pillar-card" style="padding:20px; text-align:center;">
+          <img src="https://images.unsplash.com/photo-1503454537195-1dcabb73ffb9?auto=format&fit=crop&w=600&q=80" alt="Hamza Farooq" style="width:100%; height:190px; border-radius:10px; object-fit:cover; margin-bottom:14px;" />
+          <h3 style="font-size:18px;">Hamza Farooq <small style="font-size:12px; color:var(--text-muted);">(10 yrs)</small></h3>
+          <p style="color:var(--accent); font-weight:700; font-size:13px; margin-bottom:6px;"><i class="fa-solid fa-award"></i> Memorized Juz Amma (Juz 30)</p>
+          <p style="font-size:13px; color:var(--text-muted);">Completed Hifz of 37 Surahs in 6 months with Ustadha Fatima. Regularly leads family Maghrib prayers.</p>
+          <small style="color:#64748b; margin-top:8px; display:block;"><i class="fa-solid fa-location-dot"></i> Manchester, UK</small>
+        </div>
+
+        <div class="pillar-card" style="padding:20px; text-align:center;">
+          <img src="https://images.unsplash.com/photo-1516627145497-ae6968895b74?auto=format&fit=crop&w=600&q=80" alt="Aamina Khan" style="width:100%; height:190px; border-radius:10px; object-fit:cover; margin-bottom:14px;" />
+          <h3 style="font-size:18px;">Aamina Khan <small style="font-size:12px; color:var(--text-muted);">(8 yrs)</small></h3>
+          <p style="color:var(--accent); font-weight:700; font-size:13px; margin-bottom:6px;"><i class="fa-solid fa-award"></i> Top Nazra Recitation Student</p>
+          <p style="font-size:13px; color:var(--text-muted);">Awarded Student of the Month for flawless pronunciation and excellent daily attendance.</p>
+          <small style="color:#64748b; margin-top:8px; display:block;"><i class="fa-solid fa-location-dot"></i> Dallas, USA</small>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Courses Section -->
+  <section class="section courses-section" id="courses">
+    <div class="container">
+      <div class="section-heading text-center">
+        <span class="sub-title">Structured Curriculum</span>
+        <h2>Comprehensive Courses for All Ages & Levels</h2>
+        <p class="section-desc">Whether taking the very first steps in Arabic letters or completing full Hifz, we provide clear roadmaps.</p>
+      </div>
+
+      <div class="courses-grid">
+        <!-- Course 1 -->
+        <div class="course-card">
+          <div class="course-thumb">
+            <img src="https://images.unsplash.com/photo-1609599006353-e629aaabfeae?auto=format&fit=crop&w=700&q=80" alt="Noorani Qaida for Beginners" />
+            <span class="course-badge">Foundational</span>
+          </div>
+          <div class="course-body">
+            <div class="course-meta">
+              <span><i class="fa-regular fa-clock"></i> 30 Min / Class</span>
+              <span><i class="fa-solid fa-user-group"></i> All Ages</span>
+            </div>
+            <h3>Noorani Qaida for Beginners</h3>
+            <p>Master Arabic phonetics, correct Makharij articulation points, and letter joining rules to build a flawless reading foundation.</p>
+            <ul class="course-highlights">
+              <li><i class="fa-solid fa-check"></i> Letter shapes & phonics</li>
+              <li><i class="fa-solid fa-check"></i> Harakat, Tanween & Sukoon</li>
+              <li><i class="fa-solid fa-check"></i> Practice with live feedback</li>
+            </ul>
+            <div class="course-footer">
+              <a href="admission.html?course=Noorani+Qaida" class="btn btn-outline btn-sm">Enroll Now</a>
+              <a href="courses.html#qaida" class="learn-link">Details <i class="fa-solid fa-arrow-right"></i></a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Course 2 -->
+        <div class="course-card">
+          <div class="course-thumb">
+            <img src="https://images.unsplash.com/photo-1585036156171-384164a8c675?auto=format&fit=crop&w=700&q=80" alt="Tajweed & Tarteel Course" />
+            <span class="course-badge">Popular</span>
+          </div>
+          <div class="course-body">
+            <div class="course-meta">
+              <span><i class="fa-regular fa-clock"></i> 30 Min / Class</span>
+              <span><i class="fa-solid fa-user-group"></i> Intermediate</span>
+            </div>
+            <h3>Tajweed & Tarteel Mastery</h3>
+            <p>Learn theoretical and applied rules of Tajweed including Ghunnah, Ikhfa, Idgham, Qalqalah, and Madd for beautiful recitation.</p>
+            <ul class="course-highlights">
+              <li><i class="fa-solid fa-check"></i> Essential Tajweed regulations</li>
+              <li><i class="fa-solid fa-check"></i> Breath control and stopping signs</li>
+              <li><i class="fa-solid fa-check"></i> Melodious Tarteel modulation</li>
+            </ul>
+            <div class="course-footer">
+              <a href="admission.html?course=Tajweed" class="btn btn-outline btn-sm">Enroll Now</a>
+              <a href="courses.html#tajweed" class="learn-link">Details <i class="fa-solid fa-arrow-right"></i></a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Course 3 -->
+        <div class="course-card">
+          <div class="course-thumb">
+            <img src="https://images.unsplash.com/photo-1564769625905-50e93615e769?auto=format&fit=crop&w=700&q=80" alt="Quran Recitation (Nazra)" />
+            <span class="course-badge">Core</span>
+          </div>
+          <div class="course-body">
+            <div class="course-meta">
+              <span><i class="fa-regular fa-clock"></i> 30 Min / Class</span>
+              <span><i class="fa-solid fa-user-group"></i> All Levels</span>
+            </div>
+            <h3>Quran Recitation (Nazra)</h3>
+            <p>Guided, fluent recitation through the entire 30 Paras of the Quran with direct corrections and continuous encouragement.</p>
+            <ul class="course-highlights">
+              <li><i class="fa-solid fa-check"></i> Continuous reading fluency</li>
+              <li><i class="fa-solid fa-check"></i> Instant pronunciation fixes</li>
+              <li><i class="fa-solid fa-check"></i> Completion certificate at Khatam</li>
+            </ul>
+            <div class="course-footer">
+              <a href="admission.html?course=Recitation" class="btn btn-outline btn-sm">Enroll Now</a>
+              <a href="courses.html#recitation" class="learn-link">Details <i class="fa-solid fa-arrow-right"></i></a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Course 4 -->
+        <div class="course-card">
+          <div class="course-thumb">
+            <img src="https://images.unsplash.com/photo-1542816417-0983c9c9ad53?auto=format&fit=crop&w=700&q=80" alt="Quran Memorization (Hifz)" />
+            <span class="course-badge">Advanced</span>
+          </div>
+          <div class="course-body">
+            <div class="course-meta">
+              <span><i class="fa-regular fa-clock"></i> 45 Min / Class</span>
+              <span><i class="fa-solid fa-user-group"></i> Dedicated</span>
+            </div>
+            <h3>Quran Memorization (Hifz)</h3>
+            <p>Systematic memorization with Sabaq (new lesson), Sabqi (recent revisions), and Manzil (repetition cycle) managed by experienced Huffaz.</p>
+            <ul class="course-highlights">
+              <li><i class="fa-solid fa-check"></i> Daily revision strategy</li>
+              <li><i class="fa-solid fa-check"></i> Full or selected Surah tracks</li>
+              <li><i class="fa-solid fa-check"></i> Strong long-term retention</li>
+            </ul>
+            <div class="course-footer">
+              <a href="admission.html?course=Hifz" class="btn btn-outline btn-sm">Enroll Now</a>
+              <a href="courses.html#hifz" class="learn-link">Details <i class="fa-solid fa-arrow-right"></i></a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Course 5 -->
+        <div class="course-card">
+          <div class="course-thumb">
+            <img src="https://images.unsplash.com/photo-1584281729288-897488f5791a?auto=format&fit=crop&w=700&q=80" alt="Tafseer & Quranic Meaning" />
+            <span class="course-badge">Enriching</span>
+          </div>
+          <div class="course-body">
+            <div class="course-meta">
+              <span><i class="fa-regular fa-clock"></i> 30 Min / Class</span>
+              <span><i class="fa-solid fa-user-group"></i> Adults & Youths</span>
+            </div>
+            <h3>Tafseer & Quranic Meaning</h3>
+            <p>Understand the historical context (Asbab al-Nuzul), word-by-word linguistic analysis, and practical life applications of the Holy Quran.</p>
+            <ul class="course-highlights">
+              <li><i class="fa-solid fa-check"></i> Word-to-word translation</li>
+              <li><i class="fa-solid fa-check"></i> Classical Tafseer summaries</li>
+              <li><i class="fa-solid fa-check"></i> Spiritual life reflections</li>
+            </ul>
+            <div class="course-footer">
+              <a href="admission.html?course=Tafseer" class="btn btn-outline btn-sm">Enroll Now</a>
+              <a href="courses.html#tafseer" class="learn-link">Details <i class="fa-solid fa-arrow-right"></i></a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Course 6 -->
+        <div class="course-card">
+          <div class="course-thumb">
+            <img src="https://images.unsplash.com/photo-1590076215667-875d4ef2d7ee?auto=format&fit=crop&w=700&q=80" alt="Islamic Studies & Namaz for Kids" />
+            <span class="course-badge">Essential</span>
+          </div>
+          <div class="course-body">
+            <div class="course-meta">
+              <span><i class="fa-regular fa-clock"></i> 30 Min / Class</span>
+              <span><i class="fa-solid fa-user-group"></i> Kids (Age 4-15)</span>
+            </div>
+            <h3>Islamic Essentials & Salah</h3>
+            <p>Step-by-step Salah (Namaz), 6 Kalimas, daily Masnoon Duas, manners (Adab), and engaging stories of the Prophets for young minds.</p>
+            <ul class="course-highlights">
+              <li><i class="fa-solid fa-check"></i> Practical Wudu & Salah demo</li>
+              <li><i class="fa-solid fa-check"></i> Islamic moral character (Akhlaq)</li>
+              <li><i class="fa-solid fa-check"></i> Inspiring Seerah stories</li>
+            </ul>
+            <div class="course-footer">
+              <a href="admission.html?course=Islamic+Studies" class="btn btn-outline btn-sm">Enroll Now</a>
+              <a href="courses.html#islamic-studies" class="learn-link">Details <i class="fa-solid fa-arrow-right"></i></a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- How It Works Section -->
+  <section class="section how-it-works bg-light">
+    <div class="container">
+      <div class="section-heading text-center anim-up">
+        <span class="sub-title">Simple Onboarding</span>
+        <h2>Begin Your Journey in 3 Easy Steps</h2>
+        <p class="section-desc">Getting started with Ushoq Ul Quran Academy takes less than 2 minutes.</p>
+      </div>
+
+      <div class="steps-grid">
+        <div class="step-card anim-up anim-delay-1">
+          <div class="step-num">01</div>
+          <div class="step-icon"><i class="fa-solid fa-clipboard-list"></i></div>
+          <h3>Register Free</h3>
+          <p>Fill out our short admission form or text us directly via WhatsApp with your preferred schedule and course.</p>
+        </div>
+        <div class="step-arrow"><i class="fa-solid fa-arrow-right-long"></i></div>
+        <div class="step-card anim-up anim-delay-2">
+          <div class="step-num">02</div>
+          <div class="step-icon"><i class="fa-solid fa-chalkboard-user"></i></div>
+          <h3>Take 3 Free Classes</h3>
+          <p>Meet your assigned tutor in a live 1-on-1 virtual session (Zoom/Skype/Google Meet) without paying a dime.</p>
+        </div>
+        <div class="step-arrow"><i class="fa-solid fa-arrow-right-long"></i></div>
+        <div class="step-card anim-up anim-delay-3">
+          <div class="step-num">03</div>
+          <div class="step-icon"><i class="fa-solid fa-award"></i></div>
+          <h3>Continue & Excel</h3>
+          <p>If fully satisfied, choose an affordable monthly plan and embark on your rewarding Quranic achievement.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Pricing Preview Section -->
+  <section class="section pricing-section" id="pricing">
+    <div class="container">
+      <div class="section-heading text-center anim-up">
+        <span class="sub-title">Honest & Fair Hadiya</span>
+        <h2>Transparent Monthly Plans</h2>
+        <p class="section-desc">Affordable tuition fees to support certified teachers. No hidden setup fees, and 10% discount for families.</p>
+
+        <!-- Currency Selector -->
+        <div class="currency-tabs" id="currencyTabs">
+          <button class="curr-btn active" data-curr="usd">USD ($)</button>
+          <button class="curr-btn" data-curr="gbp">GBP (£)</button>
+          <button class="curr-btn" data-curr="cad">CAD (C$)</button>
+          <button class="curr-btn" data-curr="aud">AUD (A$)</button>
+          <button class="curr-btn" data-curr="eur">EUR (€)</button>
+        </div>
+      </div>
+
+      <div class="pricing-grid" id="pricingGrid">
+        <!-- Weekend Plan -->
+        <div class="price-card anim-up anim-delay-1">
+          <div class="price-header">
+            <h3>Weekend Plan</h3>
+            <p>Ideal for busy weekday school & work routines</p>
+          </div>
+          <div class="price-value">
+            <span class="curr-symbol">$</span><span class="curr-val" data-usd="28" data-gbp="20" data-cad="38" data-aud="42" data-eur="26">28</span>
+            <span class="period">/ Month</span>
+          </div>
+          <ul class="price-features">
+            <li><i class="fa-solid fa-circle-check"></i> <strong>2 Classes</strong> per week (Weekend)</li>
+            <li><i class="fa-solid fa-circle-check"></i> <strong>30 Minutes</strong> per session</li>
+            <li><i class="fa-solid fa-circle-check"></i> 1-on-1 Dedicated Tutor</li>
+            <li><i class="fa-solid fa-circle-check"></i> 3-Day Free Trial</li>
+            <li><i class="fa-solid fa-circle-check"></i> Bi-weekly progress review</li>
+            <li><i class="fa-solid fa-circle-check"></i> No Registration Fee</li>
+          </ul>
+          <a href="admission.html?plan=Weekend" class="btn btn-outline btn-block">Enroll in Weekend</a>
+        </div>
+
+        <!-- Standard Plan (Featured) -->
+        <div class="price-card featured anim-up anim-delay-2">
+          <div class="featured-ribbon">Most Popular</div>
+          <div class="price-header">
+            <h3>Standard Plan</h3>
+            <p>Balanced pace for steady, confident Quran progress</p>
+          </div>
+          <div class="price-value">
+            <span class="curr-symbol">$</span><span class="curr-val" data-usd="36" data-gbp="26" data-cad="48" data-aud="54" data-eur="34">36</span>
+            <span class="period">/ Month</span>
+          </div>
+          <ul class="price-features">
+            <li><i class="fa-solid fa-circle-check"></i> <strong>3 Classes</strong> per week (Mon - Fri)</li>
+            <li><i class="fa-solid fa-circle-check"></i> <strong>30 Minutes</strong> per session</li>
+            <li><i class="fa-solid fa-circle-check"></i> 1-on-1 Dedicated Tutor</li>
+            <li><i class="fa-solid fa-circle-check"></i> 3-Day Free Trial</li>
+            <li><i class="fa-solid fa-circle-check"></i> Male or Female Instructor Choice</li>
+            <li><i class="fa-solid fa-circle-check"></i> 10% Family Discount Available</li>
+          </ul>
+          <a href="admission.html?plan=Standard" class="btn btn-primary btn-block">Enroll in Standard</a>
+        </div>
+
+        <!-- Intensive Plan -->
+        <div class="price-card anim-up anim-delay-3">
+          <div class="price-header">
+            <h3>Intensive Plan</h3>
+            <p>Accelerated track for Hifz and fast learners</p>
+          </div>
+          <div class="price-value">
+            <span class="curr-symbol">$</span><span class="curr-val" data-usd="48" data-gbp="35" data-cad="65" data-aud="72" data-eur="45">48</span>
+            <span class="period">/ Month</span>
+          </div>
+          <ul class="price-features">
+            <li><i class="fa-solid fa-circle-check"></i> <strong>5 Classes</strong> per week (Daily)</li>
+            <li><i class="fa-solid fa-circle-check"></i> <strong>30 Minutes</strong> per session</li>
+            <li><i class="fa-solid fa-circle-check"></i> Ideal for Hifz & Nazra</li>
+            <li><i class="fa-solid fa-circle-check"></i> Priority slot rescheduling</li>
+            <li><i class="fa-solid fa-circle-check"></i> Dedicated Supervisor Check-in</li>
+            <li><i class="fa-solid fa-circle-check"></i> Completion Certificate</li>
+          </ul>
+          <a href="admission.html?plan=Intensive" class="btn btn-outline btn-block">Enroll in Intensive</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Tutors Preview Section (Dynamic from Supabase) -->
+  <section class="section tutors-section bg-light">
+    <div class="container">
+      <div class="section-heading text-center anim-up">
+        <span class="sub-title">Scholarly Excellence</span>
+        <h2>Learn From Certified Male & Female Scholars</h2>
+        <p class="section-desc">Selected through multi-tier vetting for Tajweed mastery, fluent English communication, and patient teaching methodology.</p>
+      </div>
+
+      <div class="tutors-grid">
+        <div class="tutor-card anim-up anim-delay-1">
+          <div class="tutor-avatar">
+            <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=400&q=80" alt="Sheikh Bilal Ahmed" />
+            <span class="tutor-status online"><i class="fa-solid fa-circle"></i> Available</span>
+          </div>
+          <div class="tutor-info">
+            <h3>Sheikh Bilal Ahmed</h3>
+            <span class="tutor-role">Senior Tajweed & Qira'at Specialist</span>
+            <p>Al-Azhar Certified, 9+ years experience teaching non-native English speakers across the UK & USA.</p>
+            <div class="tutor-tags">
+              <span>Hafiz-ul-Quran</span>
+              <span>Tajweed Master</span>
+              <span>English & Arabic</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="tutor-card anim-up anim-delay-2">
+          <div class="tutor-avatar">
+            <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=400&q=80" alt="Ustadha Fatima Al-Zahra" />
+            <span class="tutor-status online"><i class="fa-solid fa-circle"></i> Available</span>
+          </div>
+          <div class="tutor-info">
+            <h3>Ustadha Fatima Al-Zahra</h3>
+            <span class="tutor-role">Lead Female Instructor for Kids & Sisters</span>
+            <p>Masters in Islamic Studies (Wifaq-ul-Madaris), passionate about patient child-centric Quran teaching.</p>
+            <div class="tutor-tags">
+              <span>Female Tutor</span>
+              <span>Child Specialist</span>
+              <span>Noorani Qaida</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="tutor-card anim-up anim-delay-3">
+          <div class="tutor-avatar">
+            <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=400&q=80" alt="Qari Muhammad Usman" />
+            <span class="tutor-status online"><i class="fa-solid fa-circle"></i> Available</span>
+          </div>
+          <div class="tutor-info">
+            <h3>Qari Muhammad Usman</h3>
+            <span class="tutor-role">Head of Quran Memorization (Hifz)</span>
+            <p>12+ years mentoring over 120 completed Huffaz. Specialist in revision techniques and Sabqi retention.</p>
+            <div class="tutor-tags">
+              <span>Ijazah Holder</span>
+              <span>Hifz Coach</span>
+              <span>Youth Mentor</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="text-center mt-4 anim-up">
+        <a href="tutors.html" class="btn btn-outline">Meet Our Entire Faculty & Credentials</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Banner -->
+  <section class="cta-banner anim-zoom">
+    <div class="container text-center">
+      <h2>Give Your Family The Gift of The Quran</h2>
+      <p>Start your 3-day complimentary trial with a certified Quran educator today. Zero fees, zero commitments.</p>
+      <div class="cta-banner-buttons">
+        <a href="admission.html" class="btn btn-primary btn-lg"><i class="fa-solid fa-calendar-check"></i> Register Free Trial</a>
+        <a href="https://wa.me/923001234567?text=Assalam-o-Alaikum%2C%20I%20am%20interested%20in%20a%20Free%20Trial%20at%20Ushoq%20Ul%20Quran%20Academy" target="_blank" class="btn btn-whatsapp btn-lg">
+          <i class="fa-brands fa-whatsapp"></i> Chat on WhatsApp
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="container footer-content">
+      <div class="footer-col brand-col">
+        <div class="logo footer-logo">
+          <div class="logo-icon"><i class="fa-solid fa-book-quran"></i></div>
+          <div class="logo-text">
+            <span class="brand-title">Ushoq Ul Quran</span>
+            <span class="brand-sub">Online Global Academy</span>
+          </div>
+        </div>
+        <p>A trusted global institution committed to authentic Quran recitation, Tajweed, Hifz, and Islamic character building in a welcoming digital environment.</p>
+        <!-- Footer socials: Rendered dynamically, ONLY showing added channels -->
+        <div class="footer-socials"></div>
+      </div>
+
+      <div class="footer-col">
+        <h4>Core Courses</h4>
+        <ul class="footer-links">
+          <li><a href="courses.html#qaida">Noorani Qaida</a></li>
+          <li><a href="courses.html#tajweed">Tajweed Mastery</a></li>
+          <li><a href="courses.html#recitation">Nazra Recitation</a></li>
+          <li><a href="courses.html#hifz">Quran Memorization</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>Quick Links</h4>
+        <ul class="footer-links">
+          <li><a href="about.html">About Our Academy</a></li>
+          <li><a href="tutors.html">Male & Female Tutors</a></li>
+          <li><a href="fee-plans.html">Tuition & Fee Plans</a></li>
+          <li><a href="admission.html">Book Free Trial Class</a></li>
+          <li><a href="admin.html">Admin Dashboard</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>Contact Direct</h4>
+        <div class="contact-info-list">
+          <p><i class="fa-solid fa-phone"></i> +44 7400 123456</p>
+          <p><i class="fa-brands fa-whatsapp"></i> +92 300 1234567</p>
+          <p><i class="fa-regular fa-envelope"></i> contact@ushoqulquran.com</p>
+        </div>
+        <!-- Also placed under Contact Direct for high visibility -->
+        <div class="footer-socials" style="margin-top:14px;"></div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div class="container footer-bottom-content">
+        <p>&copy; 2026 Ushoq Ul Quran Academy. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <a href="https://wa.me/923001234567" target="_blank" class="floating-whatsapp" aria-label="Chat on WhatsApp">
+    <i class="fa-brands fa-whatsapp"></i>
+  </a>
+
+  <!-- Supabase Scripts -->
+  <script src="js/supabase-client.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>

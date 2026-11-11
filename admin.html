@@ -1,0 +1,872 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
+  <title>Admin Dashboard | Ushoq Ul Quran Academy</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="css/style.css" />
+  <!-- Security & DevTools Deterrence System -->
+  <script src="js/security.js"></script>
+  <!-- Supabase CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <style>
+    body {
+      background: #f1f5f9;
+    }
+    .admin-layout {
+      display: none; /* Controlled by auth check */
+      grid-template-columns: 260px 1fr;
+      min-height: 100vh;
+    }
+    .admin-sidebar {
+      background: var(--primary-dark);
+      color: #ffffff;
+      padding: 24px 18px;
+      display: flex;
+      flex-direction: column;
+    }
+    .admin-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 24px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid rgba(255,255,255,0.12);
+    }
+    .admin-logo h3 {
+      font-size: 16px;
+      color: #ffffff;
+      line-height: 1.2;
+    }
+    .admin-nav {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      flex: 1;
+    }
+    .admin-nav-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 11px 16px;
+      border-radius: var(--radius-sm);
+      color: #cbd5e1;
+      font-size: 13.5px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .admin-nav-item:hover, .admin-nav-item.active {
+      background: rgba(255,255,255,0.12);
+      color: #ffffff;
+    }
+    .admin-nav-item.active {
+      background: var(--accent);
+      color: #ffffff;
+    }
+    .admin-content {
+      padding: 20px 16px;
+      overflow-y: auto;
+    }
+    .admin-header {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+    .admin-title {
+      font-size: 22px;
+      font-weight: 800;
+      color: #0f172a;
+    }
+    .admin-card {
+      background: #ffffff;
+      border-radius: var(--radius);
+      padding: 20px 16px;
+      box-shadow: var(--shadow-sm);
+      border: 1px solid #e2e8f0;
+      margin-bottom: 20px;
+    }
+    .tab-section {
+      display: none;
+    }
+    .tab-section.active {
+      display: block;
+    }
+    .data-table-wrapper {
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+    .data-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+      text-align: left;
+      min-width: 650px;
+    }
+    .data-table th {
+      background: #f8fafc;
+      color: #475569;
+      font-weight: 700;
+      padding: 10px 12px;
+      border-bottom: 2px solid #e2e8f0;
+    }
+    .data-table td {
+      padding: 10px 12px;
+      border-bottom: 1px solid #f1f5f9;
+      color: #1e293b;
+      vertical-align: middle;
+    }
+    .item-card-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+    .manage-item-card {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: var(--radius);
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .manage-item-card img {
+      width: 100%;
+      height: 160px;
+      border-radius: 8px;
+      object-fit: cover;
+    }
+    .config-banner {
+      background: #f0fdf4;
+      border-left: 4px solid #22c55e;
+      padding: 12px 14px;
+      border-radius: 6px;
+      margin-bottom: 18px;
+      font-size: 13px;
+      color: #15803d;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    /* Modals & Login Overlays */
+    .auth-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(2, 44, 34, 0.85);
+      backdrop-filter: blur(8px);
+      z-index: 10000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+    }
+    .auth-card {
+      background: #ffffff;
+      width: 100%;
+      max-width: 440px;
+      border-radius: var(--radius-lg);
+      padding: 32px 24px;
+      box-shadow: var(--shadow-xl);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+    .auth-header {
+      text-align: center;
+      margin-bottom: 22px;
+    }
+    .auth-header h2 {
+      font-size: 22px;
+      color: var(--primary);
+      font-weight: 800;
+    }
+    .auth-header p {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+    .form-status.error {
+      background: #fee2e2;
+      color: #dc2626;
+      display: block;
+      margin-top: 10px;
+      padding: 8px 12px;
+      border-radius: 6px;
+      font-size: 12.5px;
+    }
+
+    @media (min-width: 640px) {
+      .admin-content { padding: 30px; }
+      .admin-header { flex-direction: row; justify-content: space-between; align-items: center; }
+      .config-banner { flex-direction: row; justify-content: space-between; align-items: center; }
+      .item-card-grid { grid-template-columns: repeat(2, 1fr); }
+      .manage-item-card { flex-direction: row; }
+      .manage-item-card img { width: 80px; height: 80px; }
+    }
+    @media (min-width: 1024px) {
+      .admin-layout { grid-template-columns: 260px 1fr; }
+      .item-card-grid { grid-template-columns: repeat(3, 1fr); }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Page Preloader (Islamic Motif & Glowing Spinner) -->
+  <div id="pagePreloader" class="page-preloader" aria-hidden="true">
+    <div class="preloader-content">
+      <div class="preloader-spinner-ring">
+        <div class="spinner-circle"></div>
+        <div class="preloader-icon-wrap">
+          <i class="fa-solid fa-book-quran"></i>
+        </div>
+      </div>
+      <div class="preloader-brand">
+        <span class="preloader-title">Ushoq Ul Quran</span>
+        <span class="preloader-subtitle">Admin Workspace</span>
+      </div>
+      <div class="preloader-bar">
+        <div class="preloader-progress"></div>
+      </div>
+    </div>
+  </div>
+
+<!-- 1. ADMIN LOGIN POPUP MODAL (Supports any configured user + default admin) -->
+<div id="adminLoginModal" class="auth-overlay">
+  <div class="auth-card">
+    <div class="auth-header">
+      <div class="logo-icon" style="margin:0 auto 12px; width:48px; height:48px; font-size:24px;">
+        <i class="fa-solid fa-lock"></i>
+      </div>
+      <h2>Academy Administration</h2>
+      <p>Log in with your administrator account</p>
+    </div>
+
+    <form onsubmit="handleAdminLogin(event)">
+      <div class="form-group">
+        <label><i class="fa-solid fa-user"></i> Username</label>
+        <input type="text" id="loginUsername" required placeholder="Enter username" autocomplete="username" />
+      </div>
+
+      <div class="form-group">
+        <label><i class="fa-solid fa-key"></i> Password</label>
+        <input type="password" id="loginPassword" required placeholder="••••••••" autocomplete="current-password" />
+      </div>
+
+      <div id="loginError" class="form-status error" style="display:none;"></div>
+
+      <div style="display:flex; justify-content:space-between; align-items:center; margin:14px 0;">
+        <a href="javascript:void(0)" onclick="openForgotPasswordModal()" style="font-size:12.5px; color:var(--accent); font-weight:600;">
+          <i class="fa-solid fa-circle-question"></i> Forgot Password?
+        </a>
+        <a href="index.html" style="font-size:12.5px; color:var(--text-muted);">Back to Website</a>
+      </div>
+
+      <button type="submit" class="btn btn-primary btn-block btn-lg">
+        <i class="fa-solid fa-right-to-bracket"></i> Login to Dashboard
+      </button>
+
+      <div style="margin-top:14px; text-align:center; font-size:11.5px; color:#94a3b8;">
+        Default Credentials: User <strong>admin</strong> | Pass <strong>admin</strong>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- 2. FORGOT PASSWORD & RESET MODAL -->
+<div id="forgotModal" class="auth-overlay" style="display:none;">
+  <div class="auth-card">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px;">
+      <h3 style="font-size:18px; color:var(--primary-dark); font-weight:800;">Password Recovery</h3>
+      <button type="button" onclick="closeForgotPasswordModal()" style="background:none; border:none; font-size:20px; cursor:pointer;">&times;</button>
+    </div>
+
+    <div id="resetStep1">
+      <p style="font-size:13px; color:var(--text-muted); margin-bottom:16px;">
+        Enter your registered administrator email address to receive a secure recovery code.
+      </p>
+      <form onsubmit="handleSendResetToken(event)">
+        <div class="form-group">
+          <label>Registered Admin Email</label>
+          <input type="email" id="forgotEmail" required placeholder="contact@ushoqulquran.com" />
+        </div>
+        <button type="submit" class="btn btn-primary btn-block">
+          <i class="fa-solid fa-paper-plane"></i> Send Verification Code
+        </button>
+      </form>
+    </div>
+
+    <div id="resetStep2" style="display:none;">
+      <p style="font-size:13px; color:var(--text-muted); margin-bottom:16px;">
+        Enter the 6-digit verification code sent to your email and set your new password.
+      </p>
+      <form onsubmit="handleConfirmResetToken(event)">
+        <div class="form-group">
+          <label>6-Digit Verification Code</label>
+          <input type="text" id="verificationCode" required placeholder="e.g. 542198" maxlength="6" />
+        </div>
+        <div class="form-group">
+          <label>New Password</label>
+          <input type="password" id="resetNewPassword" required placeholder="Enter new strong password" minlength="5" />
+        </div>
+        <div id="resetMsg2" class="form-status" style="display:none;"></div>
+        <button type="submit" class="btn btn-primary btn-block" style="margin-top:12px;">
+          <i class="fa-solid fa-check-double"></i> Confirm & Reset Password
+        </button>
+      </form>
+    </div>
+
+    <div id="resetMsg" class="form-status" style="display:none; margin-top:14px;"></div>
+  </div>
+</div>
+
+<!-- 3. MAIN AUTHENTICATED ADMIN LAYOUT -->
+<div class="admin-layout">
+  <!-- Sidebar -->
+  <aside class="admin-sidebar">
+    <div class="admin-logo">
+      <div class="logo-icon" style="width:36px; height:36px; font-size:16px;"><i class="fa-solid fa-book-quran"></i></div>
+      <div>
+        <h3>Ushoq Ul Quran</h3>
+        <span id="activeAdminRoleBadge" style="font-size:11px; color:#f59e0b;">Administrator</span>
+      </div>
+    </div>
+
+    <nav class="admin-nav">
+      <div class="admin-nav-item active" onclick="switchTab('trialsTab', this)">
+        <i class="fa-solid fa-user-clock"></i> <span>Trial Requests</span>
+        <span id="trialsCountBadge" class="badge" style="margin-left:auto; background:#f59e0b; color:#fff;">0</span>
+      </div>
+      <div class="admin-nav-item" onclick="switchTab('coursesTab', this)">
+        <i class="fa-solid fa-graduation-cap"></i> <span>Manage Courses</span>
+      </div>
+      <div class="admin-nav-item" onclick="switchTab('usersTab', this)">
+        <i class="fa-solid fa-users-gear"></i> <span>Admin Users</span>
+      </div>
+      <div class="admin-nav-item" onclick="switchTab('tutorsTab', this)">
+        <i class="fa-solid fa-chalkboard-user"></i> <span>Manage Tutors</span>
+      </div>
+      <div class="admin-nav-item" onclick="switchTab('studentsTab', this)">
+        <i class="fa-solid fa-children"></i> <span>Children Showcase</span>
+      </div>
+      <div class="admin-nav-item" onclick="switchTab('settingsTab', this)">
+        <i class="fa-solid fa-share-nodes"></i> <span>Info & Social Links</span>
+      </div>
+      <div class="admin-nav-item" onclick="switchTab('securityTab', this)">
+        <i class="fa-solid fa-key"></i> <span>My Password</span>
+      </div>
+      <div class="admin-nav-item" onclick="switchTab('connectionTab', this)">
+        <i class="fa-solid fa-shield-halved"></i> <span>Supabase Keys</span>
+      </div>
+    </nav>
+
+    <div style="margin-top:auto; padding-top:20px; border-top:1px solid rgba(255,255,255,0.1); display:flex; flex-direction:column; gap:8px;">
+      <a href="index.html" target="_blank" class="btn btn-outline-white btn-sm btn-block">
+        <i class="fa-solid fa-arrow-up-right-from-square"></i> Live Website
+      </a>
+      <button onclick="handleAdminLogout()" class="btn btn-sm btn-block" style="background:rgba(239,68,68,0.2); color:#fca5a5; border:1px solid rgba(239,68,68,0.3);">
+        <i class="fa-solid fa-arrow-right-from-bracket"></i> Logout
+      </button>
+    </div>
+  </aside>
+
+  <!-- Content Area -->
+  <main class="admin-content">
+    
+    <!-- Top Bar Notice -->
+    <div id="connectionBanner" class="config-banner">
+      <div>
+        <strong><i class="fa-solid fa-circle-check"></i> Supabase Connected:</strong> 
+        <span>Live link active with project <code>yraqcuqadrcnjasgtrwc</code>.</span>
+      </div>
+      <button class="btn btn-outline btn-sm" onclick="switchTab('connectionTab', document.querySelectorAll('.admin-nav-item')[7])">
+        Keys & Vault
+      </button>
+    </div>
+
+    <!-- TAB 1: TRIAL REQUESTS -->
+    <section id="trialsTab" class="tab-section active">
+      <div class="admin-header">
+        <div>
+          <h1 class="admin-title">Student Trial & Admission Inquiries</h1>
+          <p style="color:#64748b; font-size:13.5px;">All inquiries submitted via website forms.</p>
+        </div>
+        <button class="btn btn-outline btn-sm" onclick="fetchTrialRequests()">
+          <i class="fa-solid fa-rotate"></i> Refresh
+        </button>
+      </div>
+
+      <div class="admin-card">
+        <div class="data-table-wrapper">
+          <table class="data-table" id="trialsTable">
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Student / Guardian</th>
+                <th>Contact</th>
+                <th>Course & Plan</th>
+                <th>Preferences</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="trialsTableBody">
+              <tr>
+                <td colspan="7" style="text-align:center; padding:30px; color:#94a3b8;">
+                  <i class="fa-solid fa-spinner fa-spin"></i> Loading trial requests...
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 2: MANAGE COURSES (NEW!) -->
+    <section id="coursesTab" class="tab-section">
+      <div class="admin-header">
+        <div>
+          <h1 class="admin-title">Comprehensive Courses Management</h1>
+          <p style="color:#64748b; font-size:13.5px;">Add, edit, or delete courses. Changes automatically display live in the "Comprehensive Courses" section on the website.</p>
+        </div>
+        <button class="btn btn-primary btn-sm" onclick="openAddCourseModal()">
+          <i class="fa-solid fa-plus"></i> Add New Course
+        </button>
+      </div>
+
+      <!-- Add / Edit Course Card -->
+      <div id="courseFormCard" class="admin-card" style="display:none; border:2px solid var(--primary);">
+        <h3 id="courseFormTitle" style="font-size:18px; margin-bottom:16px; color:var(--primary);">Add New Course</h3>
+        <form onsubmit="handleSaveCourse(event)">
+          <input type="hidden" id="courseEditId" />
+          <div class="form-row">
+            <div class="form-group half">
+              <label>Course Title *</label>
+              <input type="text" id="courseTitle" required placeholder="e.g. Advanced Tajweed Mastery" />
+            </div>
+            <div class="form-group half">
+              <label>Badge / Level (e.g. Foundational, Popular, Core)</label>
+              <input type="text" id="courseBadge" placeholder="Foundational" />
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group half">
+              <label>Class Duration</label>
+              <input type="text" id="courseDuration" placeholder="30 Min / Class" />
+            </div>
+            <div class="form-group half">
+              <label>Target Audience</label>
+              <input type="text" id="courseAudience" placeholder="All Ages / Kids / Adults" />
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Course Description *</label>
+            <textarea id="courseDesc" rows="3" required placeholder="Explain what students will master in this course..."></textarea>
+          </div>
+
+          <div class="form-group">
+            <label>Course Highlights / Bullet Points (comma-separated)</label>
+            <input type="text" id="courseHighlights" placeholder="Letter shapes & phonics, Harakat & Tanween, Live oral testing" />
+          </div>
+
+          <div class="form-row">
+            <div class="form-group half">
+              <label>Course Image (URL or Upload from Computer) *</label>
+              <input type="url" id="courseImageUrl" placeholder="https://images.unsplash.com/..." oninput="updateImagePreview('courseImageUrl', 'coursePreview')" />
+              <input type="file" id="courseFileInput" accept="image/*" onchange="uploadImageFile(this, 'courseImageUrl', 'coursePreview')" style="margin-top:6px;" />
+            </div>
+            <div style="display:flex; align-items:center;">
+              <img id="coursePreview" class="img-preview" src="https://images.unsplash.com/photo-1609599006353-e629aaabfeae?w=200" alt="Preview" style="width:75px; height:75px; border-radius:8px;" />
+            </div>
+          </div>
+
+          <div style="display:flex; gap:10px; margin-top:16px;">
+            <button type="submit" class="btn btn-primary btn-sm"><i class="fa-solid fa-floppy-disk"></i> Save Course</button>
+            <button type="button" class="btn btn-outline btn-sm" onclick="closeCourseForm()">Cancel</button>
+          </div>
+        </form>
+      </div>
+
+      <div class="item-card-grid" id="coursesContainer"></div>
+    </section>
+
+    <!-- TAB 3: ADMIN USERS (NEW!) -->
+    <section id="usersTab" class="tab-section">
+      <div class="admin-header">
+        <div>
+          <h1 class="admin-title">Manage Admin Users & Staff Access</h1>
+          <p style="color:#64748b; font-size:13.5px;">Add extra teachers, supervisors, or administrators with their own usernames and passwords.</p>
+        </div>
+        <button class="btn btn-primary btn-sm" onclick="openAddUserModal()">
+          <i class="fa-solid fa-user-plus"></i> Add New Admin User
+        </button>
+      </div>
+
+      <!-- Add / Edit User Card -->
+      <div id="userFormCard" class="admin-card" style="display:none; border:2px solid var(--primary); max-width:650px;">
+        <h3 id="userFormTitle" style="font-size:18px; margin-bottom:16px; color:var(--primary);">Add New Admin User</h3>
+        <form onsubmit="handleSaveAdminUser(event)">
+          <input type="hidden" id="userEditId" />
+          <div class="form-row">
+            <div class="form-group half">
+              <label>Full Name *</label>
+              <input type="text" id="newAdminFullName" required placeholder="e.g. Sheikh Ahmed / Sister Hira" />
+            </div>
+            <div class="form-group half">
+              <label>Role / Position *</label>
+              <select id="newAdminRole">
+                <option value="Admin">Admin</option>
+                <option value="Academic Coordinator">Academic Coordinator</option>
+                <option value="Support">Support Staff</option>
+                <option value="Super Admin">Super Admin</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group half">
+              <label>Username (used for login) *</label>
+              <input type="text" id="newAdminUsername" required placeholder="e.g. ahmed_tutor" />
+            </div>
+            <div class="form-group half">
+              <label>Password *</label>
+              <input type="password" id="newAdminPassword" required placeholder="Enter login password" minlength="4" />
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Staff Email Address *</label>
+            <input type="email" id="newAdminEmail" required placeholder="staff.email@example.com" />
+          </div>
+
+          <div style="display:flex; gap:10px; margin-top:16px;">
+            <button type="submit" class="btn btn-primary btn-sm"><i class="fa-solid fa-floppy-disk"></i> Save Admin User</button>
+            <button type="button" class="btn btn-outline btn-sm" onclick="closeUserForm()">Cancel</button>
+          </div>
+        </form>
+      </div>
+
+      <div class="item-card-grid" id="usersContainer"></div>
+    </section>
+
+    <!-- TAB 4: MANAGE TUTORS -->
+    <section id="tutorsTab" class="tab-section">
+      <div class="admin-header">
+        <div>
+          <h1 class="admin-title">Manage Tutors & Scholars</h1>
+          <p style="color:#64748b; font-size:13.5px;">Add, update, or change tutor photos, biographies, and specialties.</p>
+        </div>
+        <button class="btn btn-primary btn-sm" onclick="openAddTutorModal()">
+          <i class="fa-solid fa-plus"></i> Add New Tutor
+        </button>
+      </div>
+
+      <div id="tutorFormCard" class="admin-card" style="display:none; border:2px solid var(--primary);">
+        <h3 id="tutorFormTitle" style="font-size:18px; margin-bottom:16px; color:var(--primary);">Add New Tutor</h3>
+        <form onsubmit="handleSaveTutor(event)">
+          <input type="hidden" id="tutorEditId" />
+          <div class="form-row">
+            <div class="form-group half">
+              <label>Full Name *</label>
+              <input type="text" id="tutorName" required placeholder="e.g. Sheikh Bilal Ahmed" />
+            </div>
+            <div class="form-group half">
+              <label>Gender *</label>
+              <select id="tutorGender" required>
+                <option value="male">Male (Scholar)</option>
+                <option value="female">Female (Ustadha)</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group half">
+              <label>Role / Title *</label>
+              <input type="text" id="tutorRole" required placeholder="e.g. Senior Tajweed & Qira'at Specialist" />
+            </div>
+            <div class="form-group half">
+              <label>Tags / Specialties (comma-separated)</label>
+              <input type="text" id="tutorTags" placeholder="Hafiz-ul-Quran, Sanad Holder, English & Arabic" />
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Biography / Credentials *</label>
+            <textarea id="tutorBio" rows="2" required placeholder="Education, years of experience, teaching approach..."></textarea>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group half">
+              <label>Tutor Photo (Image URL or File Upload) *</label>
+              <input type="url" id="tutorImageUrl" placeholder="https://images.unsplash.com/..." oninput="updateImagePreview('tutorImageUrl', 'tutorPreview')" />
+              <input type="file" id="tutorFileInput" accept="image/*" onchange="uploadImageFile(this, 'tutorImageUrl', 'tutorPreview')" style="margin-top:6px;" />
+            </div>
+            <div style="display:flex; align-items:center; gap:16px;">
+              <img id="tutorPreview" class="img-preview" src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200" alt="Preview" style="width:70px; height:70px; border-radius:8px;" />
+              <label style="display:flex; align-items:center; gap:8px; font-size:13px; cursor:pointer;">
+                <input type="checkbox" id="tutorAvailable" checked /> Available for new students
+              </label>
+            </div>
+          </div>
+
+          <div style="display:flex; gap:10px; margin-top:16px;">
+            <button type="submit" class="btn btn-primary btn-sm"><i class="fa-solid fa-floppy-disk"></i> Save Tutor</button>
+            <button type="button" class="btn btn-outline btn-sm" onclick="closeTutorForm()">Cancel</button>
+          </div>
+        </form>
+      </div>
+
+      <div class="item-card-grid" id="tutorsContainer"></div>
+    </section>
+
+    <!-- TAB 5: CHILDREN / STUDENT SHOWCASE -->
+    <section id="studentsTab" class="tab-section">
+      <div class="admin-header">
+        <div>
+          <h1 class="admin-title">Children & Student Gallery</h1>
+          <p style="color:#64748b; font-size:13.5px;">Add student photos, achievements, and Quranic milestones to inspire parents.</p>
+        </div>
+        <button class="btn btn-primary btn-sm" onclick="openAddStudentModal()">
+          <i class="fa-solid fa-plus"></i> Add Student Showcase
+        </button>
+      </div>
+
+      <div id="studentFormCard" class="admin-card" style="display:none; border:2px solid var(--primary);">
+        <h3 id="studentFormTitle" style="font-size:18px; margin-bottom:16px; color:var(--primary);">Add Student Achievement</h3>
+        <form onsubmit="handleSaveStudent(event)">
+          <input type="hidden" id="studentEditId" />
+          <div class="form-row">
+            <div class="form-group half">
+              <label>Child / Student Name *</label>
+              <input type="text" id="showcaseName" required placeholder="e.g. Zayd & Safiya" />
+            </div>
+            <div class="form-group half">
+              <label>Age</label>
+              <input type="number" id="showcaseAge" min="4" max="25" placeholder="e.g. 7" />
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group half">
+              <label>Milestone / Achievement *</label>
+              <input type="text" id="showcaseAchievement" required placeholder="e.g. Completed Noorani Qaida in 3 Months" />
+            </div>
+            <div class="form-group half">
+              <label>City & Country</label>
+              <input type="text" id="showcaseCountry" placeholder="e.g. London, UK" />
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Short Inspiring Story</label>
+            <textarea id="showcaseStory" rows="2" placeholder="Brief note on their consistency and teacher review..."></textarea>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group half">
+              <label>Child Photo (Image URL or Upload) *</label>
+              <input type="url" id="showcaseImageUrl" placeholder="https://images.unsplash.com/..." oninput="updateImagePreview('showcaseImageUrl', 'studentPreview')" />
+              <input type="file" id="studentFileInput" accept="image/*" onchange="uploadImageFile(this, 'showcaseImageUrl', 'studentPreview')" style="margin-top:6px;" />
+            </div>
+            <div style="display:flex; align-items:center;">
+              <img id="studentPreview" class="img-preview" src="https://images.unsplash.com/photo-1543269865-cbf427effbad?w=200" alt="Preview" style="width:70px; height:70px; border-radius:8px;" />
+            </div>
+          </div>
+
+          <div style="display:flex; gap:10px; margin-top:16px;">
+            <button type="submit" class="btn btn-primary btn-sm"><i class="fa-solid fa-floppy-disk"></i> Save Student</button>
+            <button type="button" class="btn btn-outline btn-sm" onclick="closeStudentForm()">Cancel</button>
+          </div>
+        </form>
+      </div>
+
+      <div class="item-card-grid" id="studentsContainer"></div>
+    </section>
+
+    <!-- TAB 6: WEBSITE INFO & SOCIAL MEDIA -->
+    <section id="settingsTab" class="tab-section">
+      <div class="admin-header">
+        <div>
+          <h1 class="admin-title">Website Content & Social Media Channels</h1>
+          <p style="color:#64748b; font-size:13.5px;">Auto-updates across top navigation, hero, and footer.</p>
+        </div>
+      </div>
+
+      <div class="admin-card" style="max-width:760px;">
+        <form onsubmit="handleSaveSettings(event)">
+          <div class="form-group">
+            <label><i class="fa-solid fa-bullhorn" style="color:var(--accent);"></i> Top Announcement Bar Notice</label>
+            <input type="text" id="settingAnnouncement" placeholder="3-Day Free Trial Available • Zero Registration Fee • 1-on-1 Classes" />
+          </div>
+
+          <div class="form-row">
+            <div class="form-group half">
+              <label><i class="fa-solid fa-phone" style="color:var(--primary);"></i> UK Phone Number</label>
+              <input type="text" id="settingUkPhone" placeholder="+44 7400 123456" />
+            </div>
+            <div class="form-group half">
+              <label><i class="fa-brands fa-whatsapp" style="color:#16a34a;"></i> Pakistan Phone / WhatsApp</label>
+              <input type="text" id="settingPkPhone" placeholder="+92 300 1234567" />
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label><i class="fa-regular fa-envelope"></i> Contact Email</label>
+            <input type="email" id="settingEmail" placeholder="contact@ushoqulquran.com" />
+          </div>
+
+          <div class="form-row">
+            <div class="form-group half">
+              <label><i class="fa-brands fa-facebook-f" style="color:#1877f2;"></i> Facebook Page URL</label>
+              <input type="url" id="settingFacebook" placeholder="https://facebook.com/yourpage" />
+            </div>
+            <div class="form-group half">
+              <label><i class="fa-brands fa-youtube" style="color:#ff0000;"></i> YouTube Channel URL</label>
+              <input type="url" id="settingYoutube" placeholder="https://youtube.com/@yourchannel" />
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group half">
+              <label><i class="fa-brands fa-instagram" style="color:#e4405f;"></i> Instagram Profile URL</label>
+              <input type="url" id="settingInstagram" placeholder="https://instagram.com/yourhandle" />
+            </div>
+            <div class="form-group half">
+              <label><i class="fa-brands fa-tiktok" style="color:#000000;"></i> TikTok Profile URL</label>
+              <input type="url" id="settingTiktok" placeholder="https://tiktok.com/@yourhandle" />
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label><i class="fa-brands fa-linkedin-in" style="color:#0a66c2;"></i> LinkedIn Page URL</label>
+            <input type="url" id="settingLinkedin" placeholder="https://linkedin.com/company/youracademy" />
+          </div>
+
+          <div style="margin-top:20px; display:flex; align-items:center; gap:14px;">
+            <button type="submit" class="btn btn-primary btn-lg">
+              <i class="fa-solid fa-floppy-disk"></i> Save Settings & Social Links
+            </button>
+            <span id="settingsSaveStatus" style="font-size:13.5px; color:#16a34a; font-weight:700; display:none;">
+              <i class="fa-solid fa-check-double"></i> Saved successfully!
+            </span>
+          </div>
+        </form>
+      </div>
+    </section>
+
+    <!-- TAB 7: MY PASSWORD & RECOVERY EMAIL -->
+    <section id="securityTab" class="tab-section">
+      <div class="admin-header">
+        <div>
+          <h1 class="admin-title">Account Password & Security</h1>
+          <p style="color:#64748b; font-size:13.5px;">Update your password or change your registered recovery email.</p>
+        </div>
+      </div>
+
+      <div class="admin-card" style="max-width:650px;">
+        <form onsubmit="handleChangeAdminPassword(event)">
+          <div class="form-group">
+            <label><i class="fa-regular fa-envelope"></i> Recovery Email</label>
+            <input type="email" id="securityEmail" placeholder="contact@ushoqulquran.com" value="contact@ushoqulquran.com" />
+            <small style="color:#64748b;">Password reset instructions will be dispatched to this email.</small>
+          </div>
+
+          <div class="form-group">
+            <label><i class="fa-solid fa-unlock-keyhole"></i> Current Password *</label>
+            <input type="password" id="currentPassword" required placeholder="Enter current password" />
+          </div>
+
+          <div class="form-row">
+            <div class="form-group half">
+              <label><i class="fa-solid fa-key"></i> New Password *</label>
+              <input type="password" id="newPassword" required placeholder="At least 5 characters" minlength="5" />
+            </div>
+            <div class="form-group half">
+              <label><i class="fa-solid fa-shield-check"></i> Confirm New Password *</label>
+              <input type="password" id="confirmPassword" required placeholder="Confirm new password" minlength="5" />
+            </div>
+          </div>
+
+          <div id="passChangeStatus" class="form-status" style="display:none; margin-bottom:14px;"></div>
+
+          <button type="submit" class="btn btn-primary btn-lg">
+            <i class="fa-solid fa-check-circle"></i> Update Password
+          </button>
+        </form>
+      </div>
+    </section>
+
+    <!-- TAB 8: SUPABASE KEYS (LOCKED WITH PASSWORD 'basit@231...0') -->
+    <section id="connectionTab" class="tab-section">
+      <div class="admin-header">
+        <div>
+          <h1 class="admin-title">Protected Supabase Secret Vault</h1>
+          <p style="color:#64748b; font-size:13.5px;">Access to raw project keys is protected by a master vault password.</p>
+        </div>
+      </div>
+
+      <!-- Locked State (Prompt for 'basit@231...0') -->
+      <div id="keysLockedCard" class="admin-card" style="max-width:550px; text-align:center; padding:36px 20px;">
+        <div style="width:64px; height:64px; border-radius:50%; background:#fee2e2; color:#dc2626; display:flex; align-items:center; justify-content:center; font-size:26px; margin:0 auto 16px;">
+          <i class="fa-solid fa-lock"></i>
+        </div>
+        <h3 style="font-size:20px; color:#0f172a; margin-bottom:6px;">Supabase Vault is Locked</h3>
+        <p style="font-size:13px; color:#64748b; margin-bottom:20px;">
+          Enter the master vault protection password to view your Supabase credentials.
+        </p>
+
+        <form onsubmit="handleUnlockSupabaseKeys(event)" style="max-width:380px; margin:0 auto;">
+          <div class="form-group">
+            <input type="password" id="keyUnlockPassword" required placeholder="Enter vault password" style="text-align:center; font-size:15px;" />
+          </div>
+          <div id="keyUnlockError" class="form-status error" style="display:none; margin-bottom:12px;"></div>
+          <button type="submit" class="btn btn-primary btn-block">
+            <i class="fa-solid fa-key"></i> Unlock Supabase Keys
+          </button>
+        </form>
+      </div>
+
+      <!-- Unlocked State -->
+      <div id="keysUnlockedCard" class="admin-card" style="display:none; max-width:700px; border-left:4px solid #16a34a;">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
+          <h3 style="font-size:18px; color:#15803d;"><i class="fa-solid fa-unlock"></i> Supabase Vault Unlocked</h3>
+          <span class="badge" style="background:#dcfce7; color:#15803d;">Authenticated</span>
+        </div>
+
+        <div class="form-group">
+          <label>Active Project URL</label>
+          <input type="text" id="configUrl" readonly value="https://yraqcuqadrcnjasgtrwc.supabase.co" style="background:#f8fafc; font-weight:600;" />
+        </div>
+
+        <div class="form-group">
+          <label>Client Publishable Anon Key</label>
+          <input type="text" id="configKey" readonly value="sb_publishable_U1zEgUg_VHTltzhGk18s_w_otdpmlai" style="background:#f8fafc; font-family:monospace; font-size:11.5px;" />
+        </div>
+
+        <div class="form-group">
+          <label>Supabase Secret Super Admin Key</label>
+          <input type="text" readonly value="sb_secret_•••••••••••••••••••••••••••••••• (Protected in .env)" style="background:#fef2f2; border-color:#fca5a5; color:#991b1b; font-family:monospace; font-size:11.5px;" />
+          <small style="color:#b91c1c;">Stored securely in <code>.env</code>. Never share with public users.</small>
+        </div>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<!-- Scripts -->
+<script src="js/auth.js"></script>
+<script src="js/supabase-client.js"></script>
+<script src="js/admin.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    checkAdminAuth();
+  });
+</script>
+</body>
+</html>

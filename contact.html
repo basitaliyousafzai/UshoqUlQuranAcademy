@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
+  <title>Contact Us & FAQs | Ushoq Ul Quran Academy</title>
+  <meta name="description" content="Get in touch with Ushoq Ul Quran Academy. Reach us via WhatsApp, phone, email, or explore our frequently asked questions." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="css/style.css" />
+  <!-- Security & DevTools Deterrence System -->
+  <script src="js/security.js"></script>
+  <!-- Supabase CDN Client -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+
+  <!-- Page Preloader (Islamic Motif & Glowing Spinner) -->
+  <div id="pagePreloader" class="page-preloader" aria-hidden="true">
+    <div class="preloader-content">
+      <div class="preloader-spinner-ring">
+        <div class="spinner-circle"></div>
+        <div class="preloader-icon-wrap">
+          <i class="fa-solid fa-book-quran"></i>
+        </div>
+      </div>
+      <div class="preloader-brand">
+        <span class="preloader-title">Ushoq Ul Quran</span>
+        <span class="preloader-subtitle">Online Global Academy</span>
+      </div>
+      <div class="preloader-bar">
+        <div class="preloader-progress"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Top Bar -->
+  <div class="top-bar">
+    <div class="container top-bar-content">
+      <div class="top-info">
+        <span><i class="fa-solid fa-phone"></i> +44 7400 123456 (UK)</span>
+        <span><i class="fa-brands fa-whatsapp"></i> +92 300 1234567 (PK)</span>
+        <span><i class="fa-regular fa-envelope"></i> contact@ushoqulquran.com</span>
+      </div>
+      <div class="top-actions">
+        <span class="badge"><i class="fa-solid fa-star"></i> 3-Day Free Trial Available • Zero Registration Fee</span>
+        <div class="top-socials"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Header -->
+  <header class="site-header" id="header">
+    <div class="container header-container">
+      <a href="index.html" class="logo">
+        <div class="logo-icon"><i class="fa-solid fa-book-quran"></i></div>
+        <div class="logo-text">
+          <span class="brand-title">Ushoq Ul Quran</span>
+          <span class="brand-sub">Online Global Academy</span>
+        </div>
+      </a>
+
+      <nav class="nav-menu" id="navMenu">
+        <a href="index.html" class="nav-link">Home</a>
+        <a href="courses.html" class="nav-link">Our Courses</a>
+        <a href="fee-plans.html" class="nav-link">Fee Plans</a>
+        <a href="tutors.html" class="nav-link">Our Tutors</a>
+        <a href="about.html" class="nav-link">About Academy</a>
+        <a href="contact.html" class="nav-link active">Contact</a>
+        <a href="admin.html" class="nav-link" style="color:var(--accent);"><i class="fa-solid fa-lock"></i> Admin</a>
+        <a href="admission.html" class="btn btn-outline nav-cta-mobile">Free Trial Registration</a>
+      </nav>
+
+      <div class="header-right">
+        <a href="admission.html" class="btn btn-primary"><i class="fa-solid fa-calendar-check"></i> Book Free Trial</a>
+        <button class="mobile-toggle" id="mobileToggle" aria-label="Toggle navigation">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Page Hero -->
+  <section class="page-hero">
+    <div class="container">
+      <div class="breadcrumb">
+        <a href="index.html">Home</a> <i class="fa-solid fa-angle-right"></i> <span>Contact</span>
+      </div>
+      <h1>Get in Touch with Our Academic Team</h1>
+      <p>Have questions about schedules, teachers, courses, or technical setup? We are available 24/7 to assist you.</p>
+    </div>
+  </section>
+
+  <!-- Contact Info & Form -->
+  <section class="section">
+    <div class="container">
+      <div class="hero-container" style="display:flex; flex-direction:column; gap:36px;">
+        <!-- Contact Details -->
+        <div>
+          <span class="sub-title" style="color:var(--accent); font-weight:700; text-transform:uppercase; font-size:12px; letter-spacing:1px;">Reach Out</span>
+          <h2 style="font-size:28px; color:var(--primary-dark); margin-bottom:18px;">We are Always Here to Help</h2>
+          <p style="color:var(--text-muted); margin-bottom:28px;">Feel free to drop a message, send an email, or initiate a live WhatsApp conversation with our counselor right now.</p>
+
+          <div style="display: flex; flex-direction:column; gap:20px;">
+            <div style="display: flex; gap:16px; align-items:flex-start;">
+              <div style="width:46px; height:46px; border-radius:10px; background:rgba(6,78,59,0.08); color:var(--primary); display:flex; align-items:center; justify-content:center; font-size:20px; flex-shrink:0;">
+                <i class="fa-solid fa-phone"></i>
+              </div>
+              <div>
+                <h4 style="font-size:15px; color:var(--primary-dark);">UK & European Inquiries</h4>
+                <p style="color:var(--text-muted); font-size:14px;">+44 7400 123456 (Voice & SMS)</p>
+              </div>
+            </div>
+
+            <div style="display: flex; gap:16px; align-items:flex-start;">
+              <div style="width:46px; height:46px; border-radius:10px; background:rgba(37,211,102,0.1); color:#16a34a; display:flex; align-items:center; justify-content:center; font-size:20px; flex-shrink:0;">
+                <i class="fa-brands fa-whatsapp"></i>
+              </div>
+              <div>
+                <h4 style="font-size:15px; color:var(--primary-dark);">Instant WhatsApp Support</h4>
+                <p style="color:var(--text-muted); font-size:14px;">+92 300 1234567 (24/7 Dedicated)</p>
+              </div>
+            </div>
+
+            <div style="display: flex; gap:16px; align-items:flex-start;">
+              <div style="width:46px; height:46px; border-radius:10px; background:rgba(217,119,6,0.1); color:var(--accent); display:flex; align-items:center; justify-content:center; font-size:20px; flex-shrink:0;">
+                <i class="fa-regular fa-envelope"></i>
+              </div>
+              <div>
+                <h4 style="font-size:15px; color:var(--primary-dark);">Official Academic Inquiries</h4>
+                <p style="color:var(--text-muted); font-size:14px;">contact@ushoqulquran.com</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Contact Form -->
+        <div style="background:#ffffff; padding:28px 20px; border-radius:var(--radius-lg); border:1px solid var(--border-light); box-shadow:var(--shadow-md);">
+          <h3 style="font-size:22px; color:var(--primary-dark); margin-bottom:8px;">Send Us a Direct Message</h3>
+          <p style="font-size:13.5px; color:var(--text-muted); margin-bottom:22px;">Fill in the form below and an academic counselor will reply promptly.</p>
+
+          <form onsubmit="handleContactForm(event)">
+            <div class="form-row">
+              <div class="form-group half">
+                <label>Your Name *</label>
+                <input type="text" required placeholder="e.g. Farhan Ali" />
+              </div>
+              <div class="form-group half">
+                <label>Email Address *</label>
+                <input type="email" required placeholder="your.name@mail.com" />
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group half">
+                <label>WhatsApp / Phone *</label>
+                <input type="tel" required placeholder="+1 234 567 8900" />
+              </div>
+              <div class="form-group half">
+                <label>Subject</label>
+                <select>
+                  <option>Free Trial Class Inquiry</option>
+                  <option>Fee & Payment Query</option>
+                  <option>Change Teacher / Timings</option>
+                  <option>General Academic Question</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label>Your Message or Query *</label>
+              <textarea rows="4" required placeholder="Tell us how we can assist you..."></textarea>
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-block btn-lg">
+              <i class="fa-solid fa-paper-plane"></i> Send Message
+            </button>
+            <div id="contactStatus" class="form-status"></div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="container footer-content">
+      <div class="footer-col brand-col">
+        <div class="logo footer-logo">
+          <div class="logo-icon"><i class="fa-solid fa-book-quran"></i></div>
+          <div class="logo-text">
+            <span class="brand-title">Ushoq Ul Quran</span>
+            <span class="brand-sub">Online Global Academy</span>
+          </div>
+        </div>
+        <p>A trusted global institution committed to authentic Quran recitation, Tajweed, Hifz, and Islamic character building in a welcoming digital environment.</p>
+        <div class="footer-socials"></div>
+      </div>
+
+      <div class="footer-col">
+        <h4>Core Courses</h4>
+        <ul class="footer-links">
+          <li><a href="courses.html#qaida">Noorani Qaida</a></li>
+          <li><a href="courses.html#tajweed">Tajweed Mastery</a></li>
+          <li><a href="courses.html#recitation">Nazra Recitation</a></li>
+          <li><a href="courses.html#hifz">Quran Memorization</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>Academy Links</h4>
+        <ul class="footer-links">
+          <li><a href="about.html">About Us</a></li>
+          <li><a href="tutors.html">Our Tutors</a></li>
+          <li><a href="fee-plans.html">Fee Plans</a></li>
+          <li><a href="contact.html">Contact Us</a></li>
+          <li><a href="admin.html">Admin Dashboard</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>Contact Direct</h4>
+        <div class="contact-info-list">
+          <p><i class="fa-solid fa-phone"></i> +44 7400 123456</p>
+          <p><i class="fa-brands fa-whatsapp"></i> +92 300 1234567</p>
+          <p><i class="fa-regular fa-envelope"></i> contact@ushoqulquran.com</p>
+        </div>
+        <div class="footer-socials" style="margin-top:14px;"></div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div class="container footer-bottom-content">
+        <p>&copy; 2026 Ushoq Ul Quran Academy. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <a href="https://wa.me/923001234567" target="_blank" class="floating-whatsapp" aria-label="Chat on WhatsApp">
+    <i class="fa-brands fa-whatsapp"></i>
+  </a>
+
+  <!-- Supabase Scripts -->
+  <script src="js/supabase-client.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>
